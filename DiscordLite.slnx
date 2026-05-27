@@ -1,3 +1,5 @@
 <Solution>
-  <Project Path="DiscordLite/DiscordLite.csproj" />
+  <Project Path="DiscordLite_API/DiscordLite_API.csproj" Id="de6066df-fad1-4baf-80a6-cf0617b97c0a" />
+  <Project Path="DiscordLite_DTO/DiscordLite_DTO.csproj" Id="93645757-26c1-4aa6-a9de-5a3510656bd6" />
+  <Project Path="DiscordLite_WEB/DiscordLite_WEB.csproj" Id="cd48dbff-812b-4d5d-a61b-d396982ab8f7" />
 </Solution>

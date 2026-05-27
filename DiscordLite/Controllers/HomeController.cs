@@ -11,6 +11,15 @@ namespace DiscordLite.Controllers
             return View();
         }
 
+        public async Task<IActionResult> DeathlyHallows(string type)
+        {
+            if(SD.DeathlyHallowRace.ContainsKey(type))
+            {
+                SD.DeathlyHallowRace[type]++;
+            }
+            return Accepted();
+        }
+
         public IActionResult Privacy()
         {
             return View();

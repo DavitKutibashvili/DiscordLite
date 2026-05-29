@@ -67,10 +67,20 @@ namespace DiscordLite_API.Services
             }
         }
 
-        public async Task<UserDTO?> RegisterAsync(RegistrationRequestDTO registrationRequestDTO)
+        public async Task<(UserDTO?, string error)> RegisterAsync(RegistrationRequestDTO registrationRequestDTO)
         {
             try
             {
+                // Check email
+                var emailExists = await _userManager.FindByEmailAsync(registrationRequestDTO.Email) != null;
+                if (emailExists)
+                    return (null, $"Account with email {registrationRequestDTO.Email} already exists");
+
+                // Check username
+                var usernameExists = await _userManager.FindByNameAsync(registrationRequestDTO.UserName) != null;
+                if (usernameExists)
+                    return (null, $"Account with username {registrationRequestDTO.UserName} already exists");
+
                 User user = new()
                 {
                     Email = registrationRequestDTO.Email,
@@ -87,7 +97,7 @@ namespace DiscordLite_API.Services
 
                 await _userManager.AddToRoleAsync(user, "User");
 
-                return _mapper.Map<UserDTO>(user);
+                return (_mapper.Map<UserDTO>(user), null);
             }
             catch (Exception ex)
             {
@@ -124,7 +134,7 @@ namespace DiscordLite_API.Services
 
 
                 var refreshToken = await _tokenService.GenerateRefreshTokenAsync();
-                var refreshTokenExpiry = DateTime.UtcNow.AddMinutes(5);
+                var refreshTokenExpiry = DateTime.UtcNow.AddMinutes(10);
                 await _tokenService.SaveRefreshTokenAsync(user.Id, TokenFamilyId, refreshToken, refreshTokenExpiry);
 
                 TokenDTO tokenDTO = new()

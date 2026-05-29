@@ -41,6 +41,10 @@ namespace DiscordLite_DTO
         {
             return Create(false, 404, message);
         }
+        public static ApiResponse<TData> Unauthorized(string message, object? errors = null)
+        {
+            return Create(false, 401, message, default, errors: errors);
+        }
         public static ApiResponse<TData> BadRequest(string message, object? errors = null)
         {
             return Create(false, 400, message, default, errors: errors);

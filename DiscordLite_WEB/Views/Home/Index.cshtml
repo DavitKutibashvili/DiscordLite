@@ -1,350 +1,323 @@
 ﻿@{
-    Layout = null;
     ViewData["Title"] = "Discord Lite - Communication Simplified";
 }
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top border-bottom border-secondary">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-4" href="#">
+            <i class="bi bi-discord me-2"></i>Discord Lite
+        </a>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <title>@ViewData["Title"]</title>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/DiscordLite_WEB.styles.css" asp-append-version="true" />
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Download</a>
+                </li>
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-</head>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Safety</a>
+                </li>
 
-<body class="bg-dark">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Support</a>
+                </li>
+            </ul>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top border-bottom border-secondary">
-        <div class="container">
-            <a class="navbar-brand fw-bold fs-4" href="#">
-                <i class="bi bi-discord me-2"></i>Discord Lite
+            <div class="d-flex gap-2">
+                <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-light">Log In</a>
+                <a asp-controller="Auth" asp-action="Register" class="btn btn-primary">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="bg-dark text-white py-5">
+    <div class="container text-center py-5">
+        <h1 class="display-3 fw-bold mb-4">Communication<br />without the clutter</h1>
+        <p class="lead text-secondary mb-5 mx-auto" style="max-width: 600px;">
+            Discord Lite strips away the complexity. No bloat, no unnecessary features —
+            just fast, reliable voice and text chat for you and your community.
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="#" class="btn btn-primary btn-lg">
+                <i class="bi bi-download me-2"></i>Download Now
             </a>
+            <a href="#" class="btn btn-outline-light btn-lg">
+                Open in Browser
+            </a>
+        </div>
+    </div>
+</section>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+<!-- Stats Section -->
+<section class="bg-dark border-top border-bottom border-secondary">
+    <div class="container">
+        <div class="row g-0">
+            <div class="col-md-3 col-6 text-center py-4 border-end border-secondary">
+                <div class="fs-2 fw-bold text-white"><span class="text-primary">70%</span> less</div>
+                <div class="text-secondary small">Resource usage</div>
+            </div>
+            <div class="col-md-3 col-6 text-center py-4 border-end border-secondary">
+                <div class="fs-2 fw-bold text-white"><span class="text-primary">50%</span> faster</div>
+                <div class="text-secondary small">Startup time</div>
+            </div>
+            <div class="col-md-3 col-6 text-center py-4 border-end border-secondary">
+                <div class="fs-2 fw-bold text-white"><span class="text-primary">Zero</span></div>
+                <div class="text-secondary small">Bloatware features</div>
+            </div>
+            <div class="col-md-3 col-6 text-center py-4">
+                <div class="fs-2 fw-bold text-white"><span class="text-primary">100%</span></div>
+                <div class="text-secondary small">Focus on communication</div>
+            </div>
+        </div>
+    </div>
+</section>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
+<!-- Features Section -->
+<section class="bg-dark text-white py-5">
+    <div class="container py-4">
+        <div class="row mb-5">
+            <div class="col-lg-6">
+                <p class="text-secondary text-uppercase small fw-semibold mb-2">
+                    <i class="bi bi-lightning-charge me-2"></i>Core Features
+                </p>
+                <h2 class="display-5 fw-bold">Everything you need.<br />Nothing you don't.</h2>
+            </div>
+            <div class="col-lg-6 d-flex align-items-end">
+                <p class="text-secondary fs-5">
+                    We removed the clutter so you can focus on what matters — connecting with your friends
+                    and community through seamless voice and text communication.
+                </p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card bg-secondary bg-opacity-25 border-secondary h-100">
+                    <div class="card-body p-4">
+                        <div class="bg-primary rounded d-inline-flex align-items-center justify-content-center mb-3" style="width: 48px; height: 48px;">
+                            <i class="bi bi-mic fs-4 text-white"></i>
+                        </div>
+                        <h3 class="h5 fw-semibold mb-2">Crystal Clear Voice</h3>
+                        <p class="text-secondary mb-0">
+                            High-quality voice chat with minimal latency. No complicated settings — it just works.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card bg-secondary bg-opacity-25 border-secondary h-100">
+                    <div class="card-body p-4">
+                        <div class="bg-primary rounded d-inline-flex align-items-center justify-content-center mb-3" style="width: 48px; height: 48px;">
+                            <i class="bi bi-chat-dots fs-4 text-white"></i>
+                        </div>
+                        <h3 class="h5 fw-semibold mb-2">Simple Text Chat</h3>
+                        <p class="text-secondary mb-0">
+                            Clean, distraction-free messaging. Send text, images, and files without the visual noise.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card bg-secondary bg-opacity-25 border-secondary h-100">
+                    <div class="card-body p-4">
+                        <div class="bg-primary rounded d-inline-flex align-items-center justify-content-center mb-3" style="width: 48px; height: 48px;">
+                            <i class="bi bi-people fs-4 text-white"></i>
+                        </div>
+                        <h3 class="h5 fw-semibold mb-2">Server Management</h3>
+                        <p class="text-secondary mb-0">
+                            Create and manage servers with straightforward roles and permissions. No PhD required.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card bg-secondary bg-opacity-25 border-secondary h-100">
+                    <div class="card-body p-4">
+                        <div class="bg-primary rounded d-inline-flex align-items-center justify-content-center mb-3" style="width: 48px; height: 48px;">
+                            <i class="bi bi-shield-check fs-4 text-white"></i>
+                        </div>
+                        <h3 class="h5 fw-semibold mb-2">Privacy First</h3>
+                        <p class="text-secondary mb-0">
+                            Your data stays yours. No tracking, no ads, no selling your information to third parties.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card bg-secondary bg-opacity-25 border-secondary h-100">
+                    <div class="card-body p-4">
+                        <div class="bg-primary rounded d-inline-flex align-items-center justify-content-center mb-3" style="width: 48px; height: 48px;">
+                            <i class="bi bi-speedometer2 fs-4 text-white"></i>
+                        </div>
+                        <h3 class="h5 fw-semibold mb-2">Lightweight</h3>
+                        <p class="text-secondary mb-0">
+                            Uses a fraction of the memory and CPU. Perfect for older hardware or multitasking.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card bg-secondary bg-opacity-25 border-secondary h-100">
+                    <div class="card-body p-4">
+                        <div class="bg-primary rounded d-inline-flex align-items-center justify-content-center mb-3" style="width: 48px; height: 48px;">
+                            <i class="bi bi-display fs-4 text-white"></i>
+                        </div>
+                        <h3 class="h5 fw-semibold mb-2">Screen Sharing</h3>
+                        <p class="text-secondary mb-0">
+                            Share your screen with friends in one click. No plugins, no extensions, no hassle.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Comparison Section -->
+<section class="bg-black text-white py-5">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <p class="text-secondary text-uppercase small fw-semibold mb-2">
+                <i class="bi bi-bar-chart me-2"></i>Comparison
+            </p>
+            <h2 class="display-5 fw-bold">What we removed (on purpose)</h2>
+            <p class="text-secondary fs-5 mx-auto" style="max-width: 600px;">
+                Less is more. Here&apos;s what we intentionally left out to give you a cleaner experience.
+            </p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <ul class="list-group list-group-flush bg-transparent">
+                    <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between align-items-center py-3">
+                        <span>Nitro subscriptions &amp; paywalls</span>
+                        <i class="bi bi-x-circle-fill text-danger fs-5"></i>
                     </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Download</a>
+                    <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between align-items-center py-3">
+                        <span>Animated stickers &amp; super reactions</span>
+                        <i class="bi bi-x-circle-fill text-danger fs-5"></i>
                     </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Safety</a>
+                    <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between align-items-center py-3">
+                        <span>Profile decorations &amp; avatar frames</span>
+                        <i class="bi bi-x-circle-fill text-danger fs-5"></i>
                     </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Support</a>
+                    <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between align-items-center py-3">
+                        <span>Activity status &amp; game detection</span>
+                        <i class="bi bi-x-circle-fill text-danger fs-5"></i>
+                    </li>
+                    <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between align-items-center py-3">
+                        <span>Server boosts &amp; boost perks</span>
+                        <i class="bi bi-x-circle-fill text-danger fs-5"></i>
+                    </li>
+                    <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between align-items-center py-3">
+                        <span>Cluttered discovery pages</span>
+                        <i class="bi bi-x-circle-fill text-danger fs-5"></i>
+                    </li>
+                    <li class="list-group-item bg-transparent text-white border-0 d-flex justify-content-between align-items-center py-3">
+                        <span>Excessive notification types</span>
+                        <i class="bi bi-x-circle-fill text-danger fs-5"></i>
                     </li>
                 </ul>
-
-                <div class="d-flex gap-2">
-                    <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-light">Log In</a>
-                    <a asp-controller="Auth" asp-action="Register" class="btn btn-primary">Sign Up</a>
-                </div>
             </div>
         </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="bg-dark text-white py-5">
-        <div class="container text-center py-5">
-            <h1 class="display-3 fw-bold mb-4">Communication<br />without the clutter</h1>
-            <p class="lead text-secondary mb-5 mx-auto" style="max-width: 600px;">
-                Discord Lite strips away the complexity. No bloat, no unnecessary features —
-                just fast, reliable voice and text chat for you and your community.
+        <div class="text-center mt-5">
+            <p class="text-secondary mb-0">
+                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                Core messaging, voice chat, and server features are all included — free forever.
             </p>
-            <div class="d-flex justify-content-center gap-3 flex-wrap">
-                <a href="#" class="btn btn-primary btn-lg">
-                    <i class="bi bi-download me-2"></i>Download Now
-                </a>
-                <a href="#" class="btn btn-outline-light btn-lg">
-                    Open in Browser
-                </a>
-            </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Stats Section -->
-    <section class="bg-dark border-top border-bottom border-secondary">
-        <div class="container">
-            <div class="row g-0">
-                <div class="col-md-3 col-6 text-center py-4 border-end border-secondary">
-                    <div class="fs-2 fw-bold text-white"><span class="text-primary">70%</span> less</div>
-                    <div class="text-secondary small">Resource usage</div>
-                </div>
-                <div class="col-md-3 col-6 text-center py-4 border-end border-secondary">
-                    <div class="fs-2 fw-bold text-white"><span class="text-primary">50%</span> faster</div>
-                    <div class="text-secondary small">Startup time</div>
-                </div>
-                <div class="col-md-3 col-6 text-center py-4 border-end border-secondary">
-                    <div class="fs-2 fw-bold text-white"><span class="text-primary">Zero</span></div>
-                    <div class="text-secondary small">Bloatware features</div>
-                </div>
-                <div class="col-md-3 col-6 text-center py-4">
-                    <div class="fs-2 fw-bold text-white"><span class="text-primary">100%</span></div>
-                    <div class="text-secondary small">Focus on communication</div>
-                </div>
-            </div>
+<!-- CTA Section -->
+<section class="bg-dark text-white py-5">
+    <div class="container text-center py-4">
+        <h2 class="display-5 fw-bold mb-3">Ready to simplify?</h2>
+        <p class="text-secondary fs-5 mb-4">
+            Join thousands of users who chose clarity over complexity.
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="#" class="btn btn-primary btn-lg">
+                <i class="bi bi-windows me-2"></i>Download for Windows
+            </a>
+            <a href="#" class="btn btn-outline-light btn-lg">
+                <i class="bi bi-apple me-2"></i>Download for Mac
+            </a>
+            <a href="#" class="btn btn-outline-light btn-lg">
+                <i class="bi bi-ubuntu me-2"></i>Download for Linux
+            </a>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Features Section -->
-    <section class="bg-dark text-white py-5">
-        <div class="container py-4">
-            <div class="row mb-5">
-                <div class="col-lg-6">
-                    <p class="text-secondary text-uppercase small fw-semibold mb-2">
-                        <i class="bi bi-lightning-charge me-2"></i>Core Features
-                    </p>
-                    <h2 class="display-5 fw-bold">Everything you need.<br />Nothing you don't.</h2>
-                </div>
-                <div class="col-lg-6 d-flex align-items-end">
-                    <p class="text-secondary fs-5">
-                        We removed the clutter so you can focus on what matters — connecting with your friends
-                        and community through seamless voice and text communication.
-                    </p>
-                </div>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-4">
-                    <div class="card bg-secondary bg-opacity-25 border-secondary h-100">
-                        <div class="card-body p-4">
-                            <div class="bg-primary rounded d-inline-flex align-items-center justify-content-center mb-3" style="width: 48px; height: 48px;">
-                                <i class="bi bi-mic fs-4 text-white"></i>
-                            </div>
-                            <h3 class="h5 fw-semibold mb-2">Crystal Clear Voice</h3>
-                            <p class="text-secondary mb-0">
-                                High-quality voice chat with minimal latency. No complicated settings — it just works.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card bg-secondary bg-opacity-25 border-secondary h-100">
-                        <div class="card-body p-4">
-                            <div class="bg-primary rounded d-inline-flex align-items-center justify-content-center mb-3" style="width: 48px; height: 48px;">
-                                <i class="bi bi-chat-dots fs-4 text-white"></i>
-                            </div>
-                            <h3 class="h5 fw-semibold mb-2">Simple Text Chat</h3>
-                            <p class="text-secondary mb-0">
-                                Clean, distraction-free messaging. Send text, images, and files without the visual noise.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card bg-secondary bg-opacity-25 border-secondary h-100">
-                        <div class="card-body p-4">
-                            <div class="bg-primary rounded d-inline-flex align-items-center justify-content-center mb-3" style="width: 48px; height: 48px;">
-                                <i class="bi bi-people fs-4 text-white"></i>
-                            </div>
-                            <h3 class="h5 fw-semibold mb-2">Server Management</h3>
-                            <p class="text-secondary mb-0">
-                                Create and manage servers with straightforward roles and permissions. No PhD required.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card bg-secondary bg-opacity-25 border-secondary h-100">
-                        <div class="card-body p-4">
-                            <div class="bg-primary rounded d-inline-flex align-items-center justify-content-center mb-3" style="width: 48px; height: 48px;">
-                                <i class="bi bi-shield-check fs-4 text-white"></i>
-                            </div>
-                            <h3 class="h5 fw-semibold mb-2">Privacy First</h3>
-                            <p class="text-secondary mb-0">
-                                Your data stays yours. No tracking, no ads, no selling your information to third parties.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card bg-secondary bg-opacity-25 border-secondary h-100">
-                        <div class="card-body p-4">
-                            <div class="bg-primary rounded d-inline-flex align-items-center justify-content-center mb-3" style="width: 48px; height: 48px;">
-                                <i class="bi bi-speedometer2 fs-4 text-white"></i>
-                            </div>
-                            <h3 class="h5 fw-semibold mb-2">Lightweight</h3>
-                            <p class="text-secondary mb-0">
-                                Uses a fraction of the memory and CPU. Perfect for older hardware or multitasking.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="card bg-secondary bg-opacity-25 border-secondary h-100">
-                        <div class="card-body p-4">
-                            <div class="bg-primary rounded d-inline-flex align-items-center justify-content-center mb-3" style="width: 48px; height: 48px;">
-                                <i class="bi bi-display fs-4 text-white"></i>
-                            </div>
-                            <h3 class="h5 fw-semibold mb-2">Screen Sharing</h3>
-                            <p class="text-secondary mb-0">
-                                Share your screen with friends in one click. No plugins, no extensions, no hassle.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Comparison Section -->
-    <section class="bg-black text-white py-5">
-        <div class="container py-4">
-            <div class="text-center mb-5">
-                <p class="text-secondary text-uppercase small fw-semibold mb-2">
-                    <i class="bi bi-bar-chart me-2"></i>Comparison
-                </p>
-                <h2 class="display-5 fw-bold">What we removed (on purpose)</h2>
-                <p class="text-secondary fs-5 mx-auto" style="max-width: 600px;">
-                    Less is more. Here&apos;s what we intentionally left out to give you a cleaner experience.
-                </p>
-            </div>
-
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <ul class="list-group list-group-flush bg-transparent">
-                        <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between align-items-center py-3">
-                            <span>Nitro subscriptions &amp; paywalls</span>
-                            <i class="bi bi-x-circle-fill text-danger fs-5"></i>
-                        </li>
-                        <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between align-items-center py-3">
-                            <span>Animated stickers &amp; super reactions</span>
-                            <i class="bi bi-x-circle-fill text-danger fs-5"></i>
-                        </li>
-                        <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between align-items-center py-3">
-                            <span>Profile decorations &amp; avatar frames</span>
-                            <i class="bi bi-x-circle-fill text-danger fs-5"></i>
-                        </li>
-                        <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between align-items-center py-3">
-                            <span>Activity status &amp; game detection</span>
-                            <i class="bi bi-x-circle-fill text-danger fs-5"></i>
-                        </li>
-                        <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between align-items-center py-3">
-                            <span>Server boosts &amp; boost perks</span>
-                            <i class="bi bi-x-circle-fill text-danger fs-5"></i>
-                        </li>
-                        <li class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between align-items-center py-3">
-                            <span>Cluttered discovery pages</span>
-                            <i class="bi bi-x-circle-fill text-danger fs-5"></i>
-                        </li>
-                        <li class="list-group-item bg-transparent text-white border-0 d-flex justify-content-between align-items-center py-3">
-                            <span>Excessive notification types</span>
-                            <i class="bi bi-x-circle-fill text-danger fs-5"></i>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="text-center mt-5">
+<!-- Footer -->
+<footer class="bg-black text-white border-top border-secondary py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <h5 class="fw-bold mb-3">
+                    <i class="bi bi-discord me-2"></i>Discord Lite
+                </h5>
                 <p class="text-secondary mb-0">
-                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                    Core messaging, voice chat, and server features are all included — free forever.
+                    Communication simplified. Built for people who value
+                    function over features.
                 </p>
             </div>
+            <div class="col-lg-2 col-md-6">
+                <h6 class="fw-semibold mb-3">Product</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Download</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Features</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Changelog</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Roadmap</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-6">
+                <h6 class="fw-semibold mb-3">Resources</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Documentation</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Support</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Status</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Blog</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-6">
+                <h6 class="fw-semibold mb-3">Company</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">About</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Careers</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Privacy</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Terms</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-6">
+                <h6 class="fw-semibold mb-3">Connect</h6>
+                <div class="d-flex gap-3">
+                    <a href="#" class="text-secondary fs-5"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" class="text-secondary fs-5"><i class="bi bi-github"></i></a>
+                    <a href="#" class="text-secondary fs-5"><i class="bi bi-discord"></i></a>
+                </div>
+            </div>
         </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="bg-dark text-white py-5">
-        <div class="container text-center py-4">
-            <h2 class="display-5 fw-bold mb-3">Ready to simplify?</h2>
-            <p class="text-secondary fs-5 mb-4">
-                Join thousands of users who chose clarity over complexity.
+        <hr class="border-secondary my-4" />
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <p class="text-secondary small mb-2 mb-md-0">
+                &copy; 2024 Discord Lite. All rights reserved.
             </p>
-            <div class="d-flex justify-content-center gap-3 flex-wrap">
-                <a href="#" class="btn btn-primary btn-lg">
-                    <i class="bi bi-windows me-2"></i>Download for Windows
-                </a>
-                <a href="#" class="btn btn-outline-light btn-lg">
-                    <i class="bi bi-apple me-2"></i>Download for Mac
-                </a>
-                <a href="#" class="btn btn-outline-light btn-lg">
-                    <i class="bi bi-ubuntu me-2"></i>Download for Linux
-                </a>
-            </div>
+            <p class="text-secondary small mb-0">
+                Not affiliated with Discord Inc.
+            </p>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-black text-white border-top border-secondary py-5">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <h5 class="fw-bold mb-3">
-                        <i class="bi bi-discord me-2"></i>Discord Lite
-                    </h5>
-                    <p class="text-secondary mb-0">
-                        Communication simplified. Built for people who value
-                        function over features.
-                    </p>
-                </div>
-                <div class="col-lg-2 col-md-6">
-                    <h6 class="fw-semibold mb-3">Product</h6>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Download</a></li>
-                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Features</a></li>
-                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Changelog</a></li>
-                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Roadmap</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-6">
-                    <h6 class="fw-semibold mb-3">Resources</h6>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Documentation</a></li>
-                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Support</a></li>
-                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Status</a></li>
-                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Blog</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-6">
-                    <h6 class="fw-semibold mb-3">Company</h6>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">About</a></li>
-                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Careers</a></li>
-                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Privacy</a></li>
-                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Terms</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-6">
-                    <h6 class="fw-semibold mb-3">Connect</h6>
-                    <div class="d-flex gap-3">
-                        <a href="#" class="text-secondary fs-5"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="text-secondary fs-5"><i class="bi bi-github"></i></a>
-                        <a href="#" class="text-secondary fs-5"><i class="bi bi-discord"></i></a>
-                    </div>
-                </div>
-            </div>
-            <hr class="border-secondary my-4" />
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
-                <p class="text-secondary small mb-2 mb-md-0">
-                    &copy; 2024 Discord Lite. All rights reserved.
-                </p>
-                <p class="text-secondary small mb-0">
-                    Not affiliated with Discord Inc.
-                </p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-
-</body>
-</html>
+    </div>
+</footer>

@@ -1,22 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DiscordLite_WEB.Controllers
 {
+    [Authorize]
     public class MainController : Controller
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
-        public IActionResult Settings()
+        public async Task<IActionResult> Settings()
         {
             return View();
         }
-        public IActionResult Friends()
+        public async Task<IActionResult> Friends()
         {
             return View();
         }
-        public IActionResult Servers()
+        public async Task<IActionResult> Servers()
         {
             return View();
         }

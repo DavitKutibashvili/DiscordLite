@@ -1,6 +1,9 @@
-﻿@{
+﻿@using DiscordLite_DTO
+@{
     ViewData["Title"] = "Discord Lite - Login";
 }
+@model LoginRequestDTO;
+
 
 <div class="bg-dark text-white min-vh-100 d-flex align-items-center justify-content-center">
     <div class="container">
@@ -18,47 +21,47 @@
                         </div>
 
                         <!-- Login Form -->
-                        <form asp-action="Login" asp-controller="Account" method="post">
+                        <form asp-action="Login" asp-controller="Auth" method="post">
                             @Html.AntiForgeryToken()
 
-                            <!-- Email Field -->
+                            <!-- Email or Username Field -->
                             <div class="mb-3">
-                                <label for="email" class="form-label text-secondary text-uppercase small fw-bold">
-                                    Email or Phone Number <span class="text-danger">*</span>
+                                <label asp-for="UsernameOrEmail" class="form-label text-secondary text-uppercase small fw-bold">
+                                    Email or UserName <span class="text-danger">*</span>
                                 </label>
-                                <input type="email"
+                                <input asp-for="@Model.UsernameOrEmail" type="text"
                                        class="form-control bg-dark border-secondary text-white"
-                                       id="email"
-                                       name="Email"
+                                       name="UsernameOrEmail"
                                        required />
-                                <span @* asp-validation-for="Email" *@ class="text-danger small"></span>
+                                <span asp-validation-for="@Model.UsernameOrEmail" class="text-danger small"></span>
                             </div>
 
                             <!-- Password Field -->
                             <div class="mb-3">
-                                <label for="password" class="form-label text-secondary text-uppercase small fw-bold">
+                                <label asp-for="Password" class="form-label text-secondary text-uppercase small fw-bold">
                                     Password <span class="text-danger">*</span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="password"
+                                    <input asp-for="Password" type="password"
                                            class="form-control bg-dark border-secondary text-white border-end-0"
-                                           id="password"
                                            name="Password"
                                            required />
                                     <button class="btn btn-dark border-secondary border-start-0" type="button" id="togglePassword">
                                         <i class="bi bi-eye text-secondary"></i>
                                     </button>
                                 </div>
-                                <span @* asp-validation-for="Password" *@ class="text-danger small"></span>
+                                <span asp-validation-for="Password" class="text-danger small"></span>
                             </div>
 
                             <!-- Forgot Password Link -->
-                            <div class="mb-3">
+                            <!-- Add Later -->
+                            @* <div class="mb-3">
                                 <a href="#" class="text-info text-decoration-none small">Forgot your password?</a>
-                            </div>
+                            </div> *@
 
-                            <!-- Remember Me -->
-                            <div class="mb-4">
+                            <!-- Remember Me  -->
+                            <!-- Add Later  -->
+                            @* <div class="mb-4">
                                 <div class="form-check">
                                     <input class="form-check-input bg-dark border-secondary"
                                            type="checkbox"
@@ -68,14 +71,24 @@
                                         Remember me
                                     </label>
                                 </div>
-                            </div>
+                            </div> *@
 
                             <!-- Validation Summary -->
-                            <div asp-validation-summary="ModelOnly" class="alert alert-danger small" role="alert"></div>
-
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <div asp-validation-summary="ModelOnly" class="alert alert-danger small" role="alert"></div>
+                            }
+                            <!-- If password is wrong -->
+                            @if (TempData["error"] != null)
+                            {
+                                <div class="alert alert-danger small py-2" role="alert">
+                                    <i class="bi bi-exclamation-circle me-1"></i>
+                                    @TempData["error"]
+                                </div>
+                            }
                             <!-- Submit Button -->
                             <div class="d-grid mb-3">
-                                <button type="submit" class="btn btn-primary btn-lg fw-semibold">
+                                <button asp-controller="Auth" asp-action="Login" type="submit" class="btn btn-primary btn-lg fw-semibold">
                                     Log In
                                 </button>
                             </div>

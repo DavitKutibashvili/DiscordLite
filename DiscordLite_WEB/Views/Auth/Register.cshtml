@@ -1,6 +1,8 @@
-﻿@{
+﻿@using DiscordLite_DTO
+@{
     ViewData["Title"] = "Discord Lite - Register";
 }
+@model RegistrationRequestDTO
 
 <div class="bg-dark text-white min-vh-100 d-flex align-items-center justify-content-center py-5">
     <div class="container">
@@ -18,61 +20,58 @@
                         </div>
 
                         <!-- Register Form -->
-                        <form asp-action="Register" asp-controller="Account" method="post">
+                        <form asp-action="Register" asp-controller="Auth" method="post">
                             @Html.AntiForgeryToken()
 
                             <!-- Email Field -->
                             <div class="mb-3">
-                                <label for="email" class="form-label text-secondary text-uppercase small fw-bold">
+                                <label asp-for="Email" for="email" class="form-label text-secondary text-uppercase small fw-bold">
                                     Email <span class="text-danger">*</span>
                                 </label>
-                                <input type="email"
+                                <input asp-for="Email" type="email"
                                        class="form-control bg-dark border-secondary text-white"
-                                       id="email"
                                        name="Email"
                                        placeholder="Enter your email"
                                        required />
-                                <span @* asp-validation-for="Email" *@ class="text-danger small"></span>
+                                <span asp-validation-for="Email" class="text-danger small"></span>
                             </div>
 
                             <!-- Display Name Field -->
                             <div class="mb-3">
-                                <label for="displayName" class="form-label text-secondary text-uppercase small fw-bold">
+                                <label asp-for="DisplayName" for="displayName" class="form-label text-secondary text-uppercase small fw-bold">
                                     Display Name <span class="text-danger">*</span>
                                 </label>
-                                <input type="text"
+                                <input asp-for="DisplayName" type="text"
                                        class="form-control bg-dark border-secondary text-white"
-                                       id="displayName"
                                        name="DisplayName"
                                        placeholder="How should we call you?"
                                        required />
-                                <span @* asp-validation-for="DisplayName" *@ class="text-danger small"></span>
+                                <span asp-validation-for="DisplayName" class="text-danger small"></span>
                             </div>
 
                             <!-- Username Field -->
                             <div class="mb-3">
-                                <label for="username" class="form-label text-secondary text-uppercase small fw-bold">
+                                <label asp-for="UserName" for="username" class="form-label text-secondary text-uppercase small fw-bold">
                                     Username <span class="text-danger">*</span>
                                 </label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-dark border-secondary text-secondary">@@</span>
-                                    <input type="text"
+                                    <input asp-for="UserName" type="text"
                                            class="form-control bg-dark border-secondary text-white"
-                                           id="username"
-                                           name="Username"
+                                           name="UserName"
                                            placeholder="Choose a unique username"
                                            required />
                                 </div>
-                                <span @* asp-validation-for="Username" *@ class="text-danger small"></span>
+                                <span asp-validation-for="UserName" class="text-danger small"></span>
                             </div>
 
                             <!-- Password Field -->
                             <div class="mb-3">
-                                <label for="password" class="form-label text-secondary text-uppercase small fw-bold">
+                                <label asp-for="Password" for="password" class="form-label text-secondary text-uppercase small fw-bold">
                                     Password <span class="text-danger">*</span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="password"
+                                    <input asp-for="Password" type="password"
                                            class="form-control bg-dark border-secondary text-white border-end-0"
                                            id="password"
                                            name="Password"
@@ -85,11 +84,12 @@
                                 <div class="form-text text-secondary small">
                                     Must be at least 8 characters with uppercase, lowercase, and numbers
                                 </div>
-                                <span @* asp-validation-for="Password" *@ class="text-danger small"></span>
+                                <span asp-validation-for="Password" class="text-danger small"></span>
                             </div>
 
                             <!-- Confirm Password Field -->
-                            <div class="mb-3">
+                            <!-- Add later -->
+                            @* <div class="mb-3">
                                 <label for="confirmPassword" class="form-label text-secondary text-uppercase small fw-bold">
                                     Confirm Password <span class="text-danger">*</span>
                                 </label>
@@ -104,11 +104,12 @@
                                         <i class="bi bi-eye text-secondary"></i>
                                     </button>
                                 </div>
-                                <span @* asp-validation-for="ConfirmPassword" *@ class="text-danger small"></span>
-                            </div>
+                                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                            </div> *@
 
                             <!-- Date of Birth -->
-                            <div class="mb-3">
+                            <!-- Add later -->
+                            @* <div class="mb-3">
                                 <label class="form-label text-secondary text-uppercase small fw-bold">
                                     Date of Birth <span class="text-danger">*</span>
                                 </label>
@@ -149,8 +150,8 @@
                                         </select>
                                     </div>
                                 </div>
-                                <span @* asp-validation-for="DateOfBirth" *@ class="text-danger small"></span>
-                            </div>
+                                <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
+                            </div> *@
 
                             <!-- Terms and Privacy Checkbox -->
                             <div class="mb-4">
@@ -181,15 +182,25 @@
                                 </div>
                             </div>
 
-                            <!-- Validation Summary -->
-                            <div asp-validation-summary="ModelOnly" class="alert alert-danger small" role="alert"></div>
-
                             <!-- Submit Button -->
                             <div class="d-grid mb-3">
                                 <button type="submit" class="btn btn-primary btn-lg fw-semibold">
                                     Continue
                                 </button>
                             </div>
+
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <div asp-validation-summary="ModelOnly" class="alert alert-danger small" role="alert"></div>
+                            }
+
+                            @if (TempData["error"] != null)
+                            {
+                                <div class="alert alert-danger small py-2" role="alert">
+                                    <i class="bi bi-exclamation-circle me-1"></i>
+                                    @TempData["error"]
+                                </div>
+                            }
 
                             <!-- Login Link -->
                             <div class="text-start">

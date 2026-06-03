@@ -50,7 +50,7 @@ namespace DiscordLite_WEB.Services
                     identity.AddClaim(new Claim(ClaimTypes.Email, emailClaim.Value));
                 }
 
-                var roleClaims = jwt.Claims.Where(u => u.Type == ClaimTypes.Role);
+                var roleClaims = jwt.Claims.Where(u => u.Type == "role");
                 foreach (var role in roleClaims)
                 {
                     identity.AddClaim(new Claim(ClaimTypes.Role, role.Value));

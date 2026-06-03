@@ -7,7 +7,7 @@ namespace DiscordLite_DTO
 {
     public class LoginRequestDTO
     {
-        [Required]
+        [Required(ErrorMessage = "Email or username is required.")]
         public required string UsernameOrEmail { get; set; }
         [Required]
         public required string Password { get; set; }

@@ -45,6 +45,10 @@ namespace DiscordLite_DTO
         {
             return Create(false, 401, message, default, errors: errors);
         }
+        public static ApiResponse<TData> Forbidden(string message = "You do not have permission to perform this action")
+        {
+            return Create(false, 403, message);
+        }
         public static ApiResponse<TData> BadRequest(string message, object? errors = null)
         {
             return Create(false, 400, message, default, errors: errors);

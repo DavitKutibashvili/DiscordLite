@@ -50,7 +50,7 @@ namespace DiscordLite_API.Services
 
 
                 var refreshToken = await _tokenService.GenerateRefreshTokenAsync();
-                var refreshTokenExpiry = DateTime.UtcNow.AddMinutes(5);
+                var refreshTokenExpiry = DateTime.UtcNow.AddMinutes(10);
                 await _tokenService.SaveRefreshTokenAsync(user.Id, jwtTokenId, refreshToken, refreshTokenExpiry);
 
                 TokenDTO tokenDTO = new()

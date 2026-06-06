@@ -38,6 +38,7 @@ builder.Services.AddHttpClient("DiscordLiteAPI", client =>
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IFriendService, FriendService>();
 
 
 var app = builder.Build();

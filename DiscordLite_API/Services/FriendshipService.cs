@@ -242,8 +242,10 @@ namespace DiscordLite_API.Services
             Id = f.Id,
             RequestedById = f.RequestedById,
             RequestedByUsername = f.RequestedBy.UserName!,
+            RequestedByDisplayName = f.RequestedBy.DisplayName!,
             ReceivedById = f.ReceivedById,
             ReceivedByUsername = f.ReceivedBy.UserName!,
+            ReceivedByDisplayName = f.ReceivedBy.DisplayName!,
             Status = f.Status.ToString(),
             CreatedAt = f.CreatedAt,
             UpdatedAt = f.UpdatedAt

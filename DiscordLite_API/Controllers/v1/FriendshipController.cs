@@ -86,23 +86,45 @@ namespace DiscordLite_API.Controllers.v1
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(ApiResponse<List<FriendshipDTO>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<List<FriendDTO>>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetFriends()
         {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var result = await _friendshipService.GetFriendsAsync(currentUserId!);
-            return StatusCode(result.StatusCode, result);
+
+            if (!result.Success || result.Data == null)
+                return StatusCode(result.StatusCode, result);
+
+            var friendDTOs = result.Data.Select(f => new FriendDTO
+            {
+                FriendshipId = f.Id,
+                FriendId = f.RequestedById == currentUserId ? f.ReceivedById : f.RequestedById,
+                FriendUserName = f.RequestedById == currentUserId ? f.ReceivedByUsername : f.RequestedByUsername,
+                FriendDisplayName = f.RequestedById == currentUserId ? f.ReceivedByDisplayName : f.RequestedByDisplayName
+            }).ToList();
+
+            return Ok(ApiResponse<List<FriendDTO>>.Ok(friendDTOs));
         }
 
         [HttpGet("pending")]
-        [ProducesResponseType(typeof(ApiResponse<List<FriendshipDTO>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<List<FriendRequestDTO>>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetPendingRequests()
         {
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var result = await _friendshipService.GetPendingRequestsAsync(currentUserId!);
-            return StatusCode(result.StatusCode, result);
+            if (!result.Success || result.Data == null)
+                return StatusCode(result.StatusCode, result);
+            var friendRequestDTOs = result.Data?.Select(fr => new FriendRequestDTO
+            {
+                FriendshipId = fr.Id,
+                SenderId = fr.RequestedById,
+                SenderUserName = fr.RequestedByUsername,
+                SenderDisplayName = fr.RequestedByDisplayName,
+                IsIncoming = fr.ReceivedById == currentUserId
+            }).ToList();
+            return Ok(ApiResponse<List<FriendRequestDTO>>.Ok(friendRequestDTOs));
         }
     }
 }

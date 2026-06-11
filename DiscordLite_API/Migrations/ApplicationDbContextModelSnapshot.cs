@@ -122,7 +122,7 @@ namespace DiscordLite_API.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Message");
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("DiscordLite_API.Model.RefreshToken", b =>

@@ -39,6 +39,7 @@ builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IFriendService, FriendService>();
+builder.Services.AddScoped<IDMChatService, DMChatService>();
 
 
 var app = builder.Build();

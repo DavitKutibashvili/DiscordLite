@@ -1,6 +1,9 @@
-﻿@{
+﻿@using DiscordLite_WEB.ViewModels
+@{
     ViewData["Title"] = "Discord Lite - Chats";
 }
+@model DMChatsVM
+
 
 <div class="pb-5 mb-4">
 
@@ -9,20 +12,31 @@
         <h1 class="h4 fw-bold mb-4">Chats</h1>
         <div class="d-flex flex-column align-items-center gap-2">
             <!--Every chat that user is joined-->
-            <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center gap-3" style="width:80%;">
-                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center fw-bold" style="width:42px;height:42px;">A</div>
-                <div class="flex-grow-1 overflow-hidden">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="fw-semibold">Alex</span>
-                        <small class="text-secondary">2m ago</small>
+            @foreach (var chat in Model.DMChats)
+            {
+                var otherUserName = chat.User1Id == Model.CurrentUserId
+                    ? chat.User2UserName
+                    : chat.User1UserName;
+                var otherDisplayName = chat.User1Id == Model.CurrentUserId
+                    ? chat.User2DisplayName
+                    : chat.User1DisplayName;
+                <a asp-action="OpenChat" asp-route-chatId="@chat.ChatId" class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center gap-3 text-decoration-none text-white" style="width:80%;">
+                    <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center gap-3" style="width:100%;">
+                        <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center fw-bold" style="width:42px;height:42px;">A</div>
+                        <div class="flex-grow-1 overflow-hidden">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-semibold">@otherDisplayName</span>
+                                <small class="text-secondary">2m ago</small>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-secondary text-truncate" style="max-width:200px;">Hey, are you free tonight?</span>
+                                <span class="badge bg-primary rounded-pill">2</span>
+                            </div>
+                        </div>
+                        <i class="bi bi-chevron-right text-secondary"></i>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="text-secondary text-truncate" style="max-width:200px;">Hey, are you free tonight?</span>
-                        <span class="badge bg-primary rounded-pill">2</span>
-                    </div>
-                </div>
-                <i class="bi bi-chevron-right text-secondary"></i>
-            </div>
+                </a>
+            }
         </div>
     </div>
 </div>

@@ -1,4 +1,5 @@
-﻿@inject IConfiguration Configuration
+﻿@inject DiscordLite_WEB.Services.IServices.ITokenProvider tokenProvider
+@inject IConfiguration Configuration
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,6 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="api-base-url" content="@Configuration["ServiceUrls:DiscordLiteApi"]" />
+    <meta name="access-token" content="@tokenProvider.GetAccessToken()" />
 
     <title>@ViewData["Title"]</title>
 
@@ -17,11 +19,17 @@
 </head>
 <body class="bg-dark text-white">
     @RenderBody()
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <script src="~/js/presence.js"></script>
+    }
 
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

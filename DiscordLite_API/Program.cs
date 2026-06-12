@@ -80,6 +80,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IFriendshipService, FriendshipService>();
 builder.Services.AddScoped<IDMChatService, DMChatService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddSingleton<IPresenceService, PresenceService>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi(options =>
 {
@@ -158,6 +159,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapHub<DMChatHub>("/hubs/dmchat");
+app.MapHub<PresenceHub>("/hubs/presence");
 
 using (var scope = app.Services.CreateScope())
 {

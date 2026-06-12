@@ -113,7 +113,7 @@
     // ── SignalR connection ────────────────────────────────────────────────────
     async function startConnection() {
         connection = new signalR.HubConnectionBuilder()
-            .withUrl(`${API_BASE}/hubs/dmchat?access_token=${encodeURIComponent(getToken())}`)
+            .withUrl(`${API_BASE}/hubs/dmchat?access_token=${encodeURIComponent(getToken())}&otherUserId=${OTHER_USER}`)
             .withAutomaticReconnect([0, 2000, 5000, 10000])
             .build();
 

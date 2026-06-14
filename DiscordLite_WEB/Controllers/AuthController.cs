@@ -104,6 +104,7 @@ namespace DiscordLite_WEB.Controllers
         public async Task<ActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
             _tokenProvider.ClearToken();
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");

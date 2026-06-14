@@ -188,6 +188,7 @@ namespace DiscordLite_WEB.Services
             {
                 ApiType.POST => HttpMethod.Post,
                 ApiType.PUT => HttpMethod.Put,
+                ApiType.PATCH => HttpMethod.Patch,
                 ApiType.DELETE => HttpMethod.Delete,
                 _ => HttpMethod.Get,
             };

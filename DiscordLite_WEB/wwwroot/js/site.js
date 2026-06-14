@@ -1,4 +1,9 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
+﻿//Makes user offline in case they log out
+document.getElementById('logout-btn').addEventListener('click', async function (e) {
+    e.preventDefault();
+    const href = this.href;
+    if (typeof presenceConnection !== 'undefined') {
+        await presenceConnection.stop();
+    }
+    window.location.href = href;
+});

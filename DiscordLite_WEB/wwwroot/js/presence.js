@@ -43,3 +43,7 @@ async function startPresenceConnection() {
 }
 
 startPresenceConnection();
+
+window.addEventListener('beforeunload', () => {
+    presenceConnection.stop();
+});

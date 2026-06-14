@@ -1,0 +1,134 @@
+﻿@using DiscordLite_DTO
+@using DiscordLite_Utility
+@{
+    ViewData["Title"] = "Discord Lite - Account Details";
+}
+@model UserDTO
+
+<div id="account-details-page" class="p-3 pb-5">
+    <div class="d-flex align-items-center gap-2 mb-4">
+        <a asp-action="Settings" class="btn btn-dark p-1">
+            <i class="bi bi-chevron-left fs-5"></i>
+        </a>
+        <h1 class="h4 fw-bold mb-0">Account Details</h1>
+    </div>
+
+    @* Avatar Section *@
+    <div class="bg-secondary bg-opacity-25 rounded-3 p-3 mb-4 mx-auto" style="width:90%;">
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <div id="avatarCircle" class="rounded-circle flex-shrink-0 overflow-hidden" style="width:64px;height:64px;">
+                <img id="avatarPreview" src="@SD.GetImageUrl(Model.AvatarUrl!)" alt="Avatar" class="rounded-circle" style="width:64px;height:64px;object-fit:cover;" />
+            </div>
+            <div>
+                <div class="fs-6 fw-semibold">Profile Picture</div>
+                <small class="text-secondary">JPG or PNG, max 5MB</small>
+            </div>
+        </div>
+        <form asp-controller="Main" asp-action="UpdateAvatar" method="post" enctype="multipart/form-data">
+            <input type="file" id="avatarInput" name="file" accept=".jpg,.jpeg,.png" class="d-none" />
+            <div class="d-flex gap-2">
+                <button type="button" class="btn btn-primary btn-sm flex-grow-1" onclick="document.getElementById('avatarInput').click()">
+                    <i class="bi bi-upload me-1"></i>Change Photo
+                </button>
+                <button type="submit" id="saveAvatarBtn" class="btn btn-success btn-sm d-none">
+                    <i class="bi bi-check me-1"></i>Save
+                </button>
+            </div>
+        </form>
+        <div id="avatarToast" class="mt-2 d-none small rounded-2 px-2 py-1"></div>
+    </div>
+
+    @* Other Settings *@
+    <div class="d-flex flex-column align-items-center gap-2 mb-4">
+        <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center justify-content-between" style="width:90%;">
+            <span class="fw-medium">Username</span>
+            <div class="d-flex align-items-center gap-2">
+                <small class="text-secondary">john_doe</small>
+                <i class="bi bi-chevron-right text-secondary"></i>
+            </div>
+        </div>
+        <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center justify-content-between" style="width:90%;">
+            <span class="fw-medium">Display Name</span>
+            <div class="d-flex align-items-center gap-2">
+                <small class="text-secondary">John</small>
+                <i class="bi bi-chevron-right text-secondary"></i>
+            </div>
+        </div>
+        <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center justify-content-between" style="width:90%;">
+            <span class="fw-medium">Email</span>
+            <div class="d-flex align-items-center gap-2">
+                <small class="text-secondary">john@example.com</small>
+                <i class="bi bi-chevron-right text-secondary"></i>
+            </div>
+        </div>
+        <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center justify-content-between" style="width:90%;">
+            <span class="fw-medium">Phone Number</span>
+            <div class="d-flex align-items-center gap-2">
+                <small class="text-secondary">Not set</small>
+                <i class="bi bi-chevron-right text-secondary"></i>
+            </div>
+        </div>
+        <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center justify-content-between" style="width:90%;">
+            <span class="fw-medium">Password</span>
+            <div class="d-flex align-items-center gap-2">
+                <small class="text-secondary">••••••••</small>
+                <i class="bi bi-chevron-right text-secondary"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="mx-auto" style="width:90%;">
+        <button class="btn btn-outline-danger py-2 fw-medium w-100">Delete Account</button>
+    </div>
+</div>
+
+<nav class="navbar fixed-bottom bg-dark border-top border-secondary">
+    <div class="container">
+        <div class="d-flex justify-content-around align-items-center w-100">
+            <a asp-action="Index" class="btn btn-dark d-flex flex-column align-items-center text-secondary" data-page="chats">
+                <i class="bi bi-chat-dots fs-5"></i>
+                <small>Chats</small>
+            </a>
+            <a asp-action="Friends" class="btn btn-dark d-flex flex-column align-items-center text-secondary" data-page="friends">
+                <i class="bi bi-people fs-5"></i>
+                <small>Friends</small>
+            </a>
+            <a asp-action="Servers" class="btn btn-dark d-flex flex-column align-items-center text-secondary" data-page="servers">
+                <i class="bi bi-hdd-stack fs-5"></i>
+                <small>Servers</small>
+            </a>
+            <a asp-action="Settings" class="btn btn-dark d-flex flex-column align-items-center text-white" data-page="settings">
+                <i class="bi bi-gear fs-5"></i>
+                <small>Settings</small>
+            </a>
+        </div>
+    </div>
+</nav>
+
+@section Scripts {
+    <script>
+            document.getElementById('avatarInput').addEventListener('change', function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const allowed = ['image/jpeg', 'image/png'];
+            if (!allowed.includes(file.type)) { showToast('Only JPG and PNG allowed.', false); return; }
+            if (file.size > 5 * 1024 * 1024) { showToast('File exceeds 5MB.', false); return; }
+
+            const reader = new FileReader();
+            reader.onload = e => {
+            document.getElementById('avatarPreview').src = e.target.result;
+            document.getElementById('saveAvatarBtn').classList.remove('d-none');
+        };
+            reader.readAsDataURL(file);
+        });
+
+        function showToast(msg, success) {
+            const t = document.getElementById('avatarToast');
+            t.textContent = msg;
+            t.className = `mt-2 small rounded-2 px-2 py-1 ${success ? 'bg-success bg-opacity-25 text-success' : 'bg-danger bg-opacity-25 text-danger'}`;
+            t.classList.remove('d-none');
+            setTimeout(() => t.classList.add('d-none'), 4000);
+        }
+    </script>
+}

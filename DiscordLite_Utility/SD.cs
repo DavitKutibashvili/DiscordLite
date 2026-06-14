@@ -11,11 +11,24 @@ namespace DiscordLite_Utility
             GET,
             POST,
             PUT,
+            PATCH,
             DELETE
         }
         public const string SessionAccessToken = "JWTToken";
         public const string SessionRefreshToken = "RefreshToken";
         public const string CurrentAPIVersion = "v1";
         public static string BaseAPIUrl { get; set; }
+        public static string GetImageUrl(string imageUrl)
+        {
+            if (string.IsNullOrEmpty(imageUrl))
+            {
+                return "/images/placeholder-avatar.png";
+            }
+            if (imageUrl.StartsWith("http"))
+            {
+                return imageUrl;
+            }
+            return $"{BaseAPIUrl}/{imageUrl}";
+        }
     }
 }

@@ -40,7 +40,7 @@ builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IFriendService, FriendService>();
 builder.Services.AddScoped<IDMChatService, DMChatService>();
-
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
@@ -53,6 +53,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseSession();

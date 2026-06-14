@@ -40,4 +40,8 @@
     <ProjectReference Include="..\DiscordLite_DTO\DiscordLite_DTO.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\avatars\" />
+  </ItemGroup>
+
 </Project>

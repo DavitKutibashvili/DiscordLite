@@ -10,5 +10,6 @@ namespace DiscordLite_DTO
         public required string UserName { get; set; }
         public string? DisplayName { get; set; }
         public required string Email { get; set; }
+        public string? AvatarUrl { get; set; }
     }
 }

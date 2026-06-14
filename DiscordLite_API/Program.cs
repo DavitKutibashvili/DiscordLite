@@ -62,7 +62,11 @@ builder.Services.AddAuthentication(option =>
         }
     };
 });
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(options =>
+{
+    options.ClientTimeoutInterval = TimeSpan.FromSeconds(15);
+    options.KeepAliveInterval = TimeSpan.FromSeconds(7);
+});
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowMVC", policy =>
@@ -81,6 +85,7 @@ builder.Services.AddScoped<IFriendshipService, FriendshipService>();
 builder.Services.AddScoped<IDMChatService, DMChatService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddSingleton<IPresenceService, PresenceService>();
+builder.Services.AddScoped<IAvatarService, AvatarService>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi(options =>
 {
@@ -134,7 +139,7 @@ builder.Services.AddAutoMapper(u =>
     .ForMember(dest => dest.SenderDisplayName, opt => opt.MapFrom(src => src.Sender.DisplayName))
     .ForMember(dest => dest.SentAt, opt => opt.MapFrom(src => src.SentAt));
 });
-
+builder.WebHost.UseWebRoot("wwwroot");
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -150,8 +155,9 @@ if (app.Environment.IsDevelopment())
         };
     });
 }
-app.UseCors("AllowMVC");
 
+app.UseStaticFiles();
+app.UseCors("AllowMVC");
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

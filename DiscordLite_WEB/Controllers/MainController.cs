@@ -12,10 +12,12 @@ namespace DiscordLite_WEB.Controllers
     {
         private readonly IFriendService _friendService;
         private readonly IDMChatService _dmChatService;
-        public MainController(IFriendService friendService, IDMChatService dMChatService)
+        private readonly IUserService _userService;
+        public MainController(IFriendService friendService, IDMChatService dMChatService, IUserService userService)
         {
             _friendService = friendService;
             _dmChatService = dMChatService;
+            _userService = userService;
         }
         public async Task<IActionResult> Index()
         {
@@ -84,6 +86,25 @@ namespace DiscordLite_WEB.Controllers
         public async Task<IActionResult> Settings()
         {
             return View();
+        }
+        public async Task<IActionResult> AccountDetails()
+        {
+            var response = await _userService.GetUserProfileAsync<ApiResponse<UserDTO>>();
+            if (response == null || response.Data == null)
+            {
+                TempData["Error"] = response?.Message ?? "Failed to load user profile";
+                return RedirectToAction("Index", "Home");
+            }
+            return View(response.Data);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateAvatar(IFormFile file)
+        {
+            var response = await _userService.UpdateUserAvatarAsync<ApiResponse<string>>(file);
+            if (response == null || !response.Success)
+                TempData["Error"] = response?.Message ?? "Failed to upload avatar";
+
+            return RedirectToAction(nameof(AccountDetails));
         }
         public async Task<IActionResult> Friends()
         {

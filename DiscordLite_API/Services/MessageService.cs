@@ -44,12 +44,12 @@ namespace DiscordLite_API.Services
 
         public async Task<ApiResponse<MessageDTO>> SendMessageAsync(int chatId, string senderId, string content)
         {
-            var user = _db.Users.Find(senderId);
+            var user = await _db.Users.FindAsync(senderId);
             if (user == null)
             {
                 return ApiResponse<MessageDTO>.NotFound("User not found");
             }
-            var chat = _db.DirectMessageChats.Find(chatId);
+            var chat = await _db.DirectMessageChats.FindAsync(chatId);
             if(chat == null)
             {
                 return ApiResponse<MessageDTO>.NotFound("Chat not found");

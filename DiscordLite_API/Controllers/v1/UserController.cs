@@ -18,8 +18,10 @@ namespace DiscordLite_API.Controllers.v1
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
         private readonly IAvatarService _avatarService;
-        public UserController(UserManager<User> userManager, IAvatarService avatarService, IMapper mapper)
+        private readonly IUserService _userService;
+        public UserController(UserManager<User> userManager, IAvatarService avatarService, IMapper mapper, IUserService userService)
         {
+            _userService = userService;
             _mapper = mapper;
             _userManager = userManager;
             _avatarService = avatarService;
@@ -33,6 +35,17 @@ namespace DiscordLite_API.Controllers.v1
             if (user == null) return NotFound(ApiResponse<string>.NotFound("User not found"));
             var userProfile = _mapper.Map<UserDTO>(user);
             return Ok(ApiResponse<UserDTO>.Ok(userProfile, "User profile retrieved successfully"));
+        }
+        [HttpPatch("displayname")]
+        public async Task<IActionResult> UpdateDisplayName([FromQuery] string newDisplayName)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) return Unauthorized(ApiResponse<object>.Unauthorized("User not authenticated"));
+
+            var result = await _userService.UpdateDisplayName(newDisplayName, userId);
+            if (!result.Success) return StatusCode(result.StatusCode, result);
+
+            return Ok(ApiResponse<string>.Ok(newDisplayName, "Display name updated successfully"));
         }
         [HttpPatch("avatar")]
         [Consumes("multipart/form-data")]

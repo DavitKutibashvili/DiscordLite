@@ -10,5 +10,6 @@ namespace DiscordLite_DTO
         public string FriendId { get; set; }
         public string FriendUserName { get; set; }
         public string FriendDisplayName { get; set; }
+        public string? FriendAvatarUrl { get; set; }
     }
 }

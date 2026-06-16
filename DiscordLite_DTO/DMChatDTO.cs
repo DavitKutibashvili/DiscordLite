@@ -11,8 +11,10 @@ namespace DiscordLite_DTO
         public string User2Id { get; set; } = null!;
         public string User1UserName { get; set; } = null!;
         public string User1DisplayName { get; set; } = null!;
+        public string? User1AvatarUrl { get; set; }
         public string User2UserName { get; set; } = null!;
         public string User2DisplayName { get; set; } = null!;
+        public string? User2AvatarUrl { get; set; }
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 }

@@ -101,7 +101,8 @@ namespace DiscordLite_API.Controllers.v1
                 FriendshipId = f.Id,
                 FriendId = f.RequestedById == currentUserId ? f.ReceivedById : f.RequestedById,
                 FriendUserName = f.RequestedById == currentUserId ? f.ReceivedByUsername : f.RequestedByUsername,
-                FriendDisplayName = f.RequestedById == currentUserId ? f.ReceivedByDisplayName : f.RequestedByDisplayName
+                FriendDisplayName = f.RequestedById == currentUserId ? f.ReceivedByDisplayName : f.RequestedByDisplayName,
+                FriendAvatarUrl = f.RequestedById == currentUserId ? f.ReceivedByAvatarUrl : f.RequestedByAvatarUrl
             }).ToList();
 
             return Ok(ApiResponse<List<FriendDTO>>.Ok(friendDTOs));
@@ -122,6 +123,7 @@ namespace DiscordLite_API.Controllers.v1
                 SenderId = fr.RequestedById,
                 SenderUserName = fr.RequestedByUsername,
                 SenderDisplayName = fr.RequestedByDisplayName,
+                SenderAvatarUrl = fr.RequestedByAvatarUrl,
                 IsIncoming = fr.ReceivedById == currentUserId
             }).ToList();
             return Ok(ApiResponse<List<FriendRequestDTO>>.Ok(friendRequestDTOs));

@@ -30,6 +30,15 @@ namespace DiscordLite_WEB.Services
             });
         }
 
+        public Task<T?> UpdateDisplayNameAsync<T>(string newDisplayName)
+        {
+            return SendAsync<T>(new ApiRequest()
+            {
+                ApiType = SD.ApiType.PATCH,
+                Url = $"/api/user/displayname?newDisplayName={Uri.EscapeDataString(newDisplayName)}",
+            });
+        }
+
         public Task<T?> UpdateUserAvatarAsync<T>(IFormFile formFile)
         {
             var formData = new MultipartFormDataContent();

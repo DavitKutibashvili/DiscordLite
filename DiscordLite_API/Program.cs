@@ -86,6 +86,7 @@ builder.Services.AddScoped<IDMChatService, DMChatService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddSingleton<IPresenceService, PresenceService>();
 builder.Services.AddScoped<IAvatarService, AvatarService>();
+builder.Services.AddScoped<IUserService, UserService>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi(options =>
 {
@@ -131,7 +132,9 @@ builder.Services.AddAutoMapper(u =>
     .ForMember(dest => dest.User1UserName, opt => opt.MapFrom(src => src.User1.UserName))
     .ForMember(dest => dest.User1DisplayName, opt => opt.MapFrom(src => src.User1.DisplayName))
     .ForMember(dest => dest.User2UserName, opt => opt.MapFrom(src => src.User2.UserName))
-    .ForMember(dest => dest.User2DisplayName, opt => opt.MapFrom(src => src.User2.DisplayName));
+    .ForMember(dest => dest.User2DisplayName, opt => opt.MapFrom(src => src.User2.DisplayName))
+    .ForMember(dest => dest.User1AvatarUrl, opt => opt.MapFrom(src => src.User1.AvatarUrl))
+    .ForMember(dest => dest.User2AvatarUrl, opt => opt.MapFrom(src => src.User2.AvatarUrl));
     u.CreateMap<Message, MessageDTO>()
     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
     .ForMember(dest => dest.SenderId, opt => opt.MapFrom(src => src.SenderId))

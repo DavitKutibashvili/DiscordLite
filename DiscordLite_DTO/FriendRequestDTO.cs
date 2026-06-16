@@ -10,6 +10,7 @@ namespace DiscordLite_DTO
         public string SenderId { get; set; }
         public string SenderUserName { get; set; }
         public string SenderDisplayName { get; set; }
+        public string? SenderAvatarUrl { get; set; }
         public bool IsIncoming { get; set; }
     }
 }

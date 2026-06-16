@@ -12,7 +12,20 @@
         </a>
         <h1 class="h4 fw-bold mb-0">Account Details</h1>
     </div>
-
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
     @* Avatar Section *@
     <div class="bg-secondary bg-opacity-25 rounded-3 p-3 mb-4 mx-auto" style="width:90%;">
         <div class="d-flex align-items-center gap-3 mb-3">
@@ -43,16 +56,21 @@
         <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center justify-content-between" style="width:90%;">
             <span class="fw-medium">Username</span>
             <div class="d-flex align-items-center gap-2">
-                <small class="text-secondary">john_doe</small>
+                <small class="text-secondary">@Model.UserName</small>
                 <i class="bi bi-chevron-right text-secondary"></i>
             </div>
         </div>
         <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center justify-content-between" style="width:90%;">
             <span class="fw-medium">Display Name</span>
-            <div class="d-flex align-items-center gap-2">
-                <small class="text-secondary">John</small>
-                <i class="bi bi-chevron-right text-secondary"></i>
+            <div class="d-flex align-items-center gap-2" id="displayname-view">
+                <small class="text-secondary">@Model.DisplayName</small>
+                <i class="bi bi-pencil text-secondary" style="cursor:pointer;" onclick="toggleDisplayNameEdit()"></i>
             </div>
+            <form asp-action="UpdateDisplayName" asp-controller="Main" method="post" id="displayname-form" class="d-none d-flex align-items-center gap-2">
+                <input type="text" name="newDisplayName" value="@Model.DisplayName" class="form-control form-control-sm" style="width:160px;" maxlength="32" />
+                <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="toggleDisplayNameEdit()">Cancel</button>
+            </form>
         </div>
         <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center justify-content-between" style="width:90%;">
             <span class="fw-medium">Email</span>
@@ -129,6 +147,12 @@
             t.className = `mt-2 small rounded-2 px-2 py-1 ${success ? 'bg-success bg-opacity-25 text-success' : 'bg-danger bg-opacity-25 text-danger'}`;
             t.classList.remove('d-none');
             setTimeout(() => t.classList.add('d-none'), 4000);
+        }
+    </script>
+    <script>
+        function toggleDisplayNameEdit() {
+            document.getElementById('displayname-view').classList.toggle('d-none');
+            document.getElementById('displayname-form').classList.toggle('d-none');
         }
     </script>
 }

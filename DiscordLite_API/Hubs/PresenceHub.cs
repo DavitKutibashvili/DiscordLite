@@ -28,6 +28,7 @@ namespace DiscordLite_API.Hubs
             }).ToList();
             var friendIds = friendDTOs.Select(f => f.FriendId);
             await Clients.Users(friendIds).SendAsync("UserOnline", CurrentUserId);
+            await Clients.Caller.SendAsync("UserOnline", CurrentUserId);
             var onlineFriendIds = _presenceService.GetOnlineUsers(friendIds);
             await Clients.Caller.SendAsync("ReceiveOnlineUsers", onlineFriendIds);
         }

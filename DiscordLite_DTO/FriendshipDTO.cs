@@ -10,9 +10,11 @@ namespace DiscordLite_DTO
         public string RequestedById { get; set; } = null!;
         public string RequestedByUsername { get; set; } = null!;
         public string RequestedByDisplayName { get; set; } = null!;
+        public string? RequestedByAvatarUrl { get; set; } = null;
         public string ReceivedById { get; set; } = null!;
         public string ReceivedByUsername { get; set; } = null!;
         public string ReceivedByDisplayName { get; set; } = null!;
+        public string? ReceivedByAvatarUrl { get; set; } = null;
         public string Status { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

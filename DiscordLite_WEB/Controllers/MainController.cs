@@ -85,7 +85,13 @@ namespace DiscordLite_WEB.Controllers
         }
         public async Task<IActionResult> Settings()
         {
-            return View();
+            var response = await _userService.GetUserProfileAsync<ApiResponse<UserDTO>>();
+            if (response == null || response.Data == null)
+            {
+                TempData["Error"] = response?.Message ?? "Failed to load user profile";
+                return RedirectToAction("Index", "Home");
+            }
+            return View(response.Data);
         }
         public async Task<IActionResult> AccountDetails()
         {
@@ -104,6 +110,16 @@ namespace DiscordLite_WEB.Controllers
             if (response == null || !response.Success)
                 TempData["Error"] = response?.Message ?? "Failed to upload avatar";
 
+            return RedirectToAction(nameof(AccountDetails));
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateDisplayName(string newDisplayName)
+        {
+            var response = await _userService.UpdateDisplayNameAsync<ApiResponse<object>>(newDisplayName);
+            if (response == null || !response.Success)
+                TempData["Error"] = response?.Message ?? "Failed to update display name";
+            else
+                TempData["Success"] = "Display name updated successfully";
             return RedirectToAction(nameof(AccountDetails));
         }
         public async Task<IActionResult> Friends()

@@ -95,7 +95,6 @@ namespace DiscordLite_WEB.Controllers
                 TempData["Error"] = $"an error occured: {ex.Message}";
                 return View(registrationRequestDTO);
             }
-            return View();
         }
         public async Task<IActionResult> AccessDenied()
         {

@@ -6,6 +6,7 @@ using DiscordLite_API.Services.IServices;
 using DiscordLite_API.Validators;
 using DiscordLite_DTO;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -87,6 +88,7 @@ builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddSingleton<IPresenceService, PresenceService>();
 builder.Services.AddScoped<IAvatarService, AvatarService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IServerService, ServerService>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi(options =>
 {
@@ -146,6 +148,21 @@ builder.WebHost.UseWebRoot("wwwroot");
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseExceptionHandler(appError =>
+{
+    appError.Run(async context =>
+    {
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "application/json";
+        var error = context.Features.Get<IExceptionHandlerFeature>();
+        if (error != null)
+        {
+            var response = ApiResponse<object>.Error(500, "An unexpected error occurred.");
+            await context.Response.WriteAsJsonAsync(response);
+        }
+    });
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -174,5 +191,4 @@ using (var scope = app.Services.CreateScope())
 {
     await DbInitializer.SeedAsync(scope.ServiceProvider);
 }
-
 app.Run();

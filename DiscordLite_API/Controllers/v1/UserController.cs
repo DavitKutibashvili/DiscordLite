@@ -26,7 +26,11 @@ namespace DiscordLite_API.Controllers.v1
             _userManager = userManager;
             _avatarService = avatarService;
         }
+
         [HttpGet("me")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUserProfile()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -36,19 +40,26 @@ namespace DiscordLite_API.Controllers.v1
             var userProfile = _mapper.Map<UserDTO>(user);
             return Ok(ApiResponse<UserDTO>.Ok(userProfile, "User profile retrieved successfully"));
         }
+
         [HttpPatch("displayname")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> UpdateDisplayName([FromQuery] string newDisplayName)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null) return Unauthorized(ApiResponse<object>.Unauthorized("User not authenticated"));
 
             var result = await _userService.UpdateDisplayName(newDisplayName, userId);
-            if (!result.Success) return StatusCode(result.StatusCode, result);
-
-            return Ok(ApiResponse<string>.Ok(newDisplayName, "Display name updated successfully"));
+            return StatusCode(result.StatusCode, result);
         }
+
         [HttpPatch("avatar")]
         [Consumes("multipart/form-data")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateAvatar([FromForm] IFormFile file)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -67,7 +78,11 @@ namespace DiscordLite_API.Controllers.v1
 
             return Ok(ApiResponse<string>.Ok(newUrl, "Avatar updated successfully"));
         }
+
         [HttpDelete("avatar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteAvatar()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

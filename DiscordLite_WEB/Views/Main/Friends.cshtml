@@ -6,152 +6,152 @@
 @model FriendshipVM
 
 <div id="friends-page" class="p-3">
-    <h1 class="h4 fw-bold mb-4 mx-auto" style="width:80%";>Friends</h1>
-        <!-- Add Friend -->
-        @if (TempData["success"] != null)
-        {
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                @TempData["success"]
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        }
-        @if (TempData["error"] != null)
-        {
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                @TempData["error"]
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        }
-        <h2 class="h6 fw-bold text-secondary text-uppercase mb-3 mx-auto" style="letter-spacing:.05em; width:80%;">Add Friend</h2>
-        <div class="d-flex flex-column align-items-center mb-4">
-            <form asp-action="SendFriendRequest" method="post" class="w-100" style="max-width:80%;">
-                <div class="input-group">
-                    <span class="input-group-text bg-dark text-secondary border-secondary">
-                        <i class="bi bi-person-plus"></i>
-                    </span>
-                    <input type="text" name="userName" class="form-control bg-dark text-white border-secondary"
-                           placeholder="Enter a username" aria-label="Username" required />
-                    <button type="submit" class="btn btn-primary px-4">Add</button>
-                </div>
-                <small class="text-secondary">You can add friends with their username.</small>
-            </form>
+    <h1 class="h4 fw-bold mb-4 mx-auto" style="width:80%" ;>Friends</h1>
+    <!-- Add Friend -->
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
-        <!-- Pending Friend Requests -->
-        @if (Model.PendingFriendRequests.Count > 0)
+    }
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    <h2 class="h6 fw-bold text-secondary text-uppercase mb-3 mx-auto" style="letter-spacing:.05em; width:80%;">Add Friend</h2>
+    <div class="d-flex flex-column align-items-center mb-4">
+        <form asp-action="SendFriendRequest" method="post" class="w-100" style="max-width:80%;">
+            <div class="input-group">
+                <span class="input-group-text bg-dark text-secondary border-secondary">
+                    <i class="bi bi-person-plus"></i>
+                </span>
+                <input type="text" name="userName" class="form-control bg-dark text-white border-secondary"
+                       placeholder="Enter a username" aria-label="Username" required />
+                <button type="submit" class="btn btn-primary px-4">Add</button>
+            </div>
+            <small class="text-secondary">You can add friends with their username.</small>
+        </form>
+    </div>
+    <!-- Pending Friend Requests -->
+    @if (Model.PendingFriendRequests.Count > 0)
+    {
+        <h2 class="h6 fw-bold text-secondary text-uppercase mb-3 mx-auto" style="letter-spacing:.05em; width:80%;">Pending Requests</h2>
+    }
+    <div class="d-flex flex-column align-items-center gap-2 mb-4">
+        @foreach (var request in Model.PendingFriendRequests)
         {
-            <h2 class="h6 fw-bold text-secondary text-uppercase mb-3 mx-auto" style="letter-spacing:.05em; width:80%;">Pending Requests</h2>
-        }
-        <div class="d-flex flex-column align-items-center gap-2 mb-4">
-            @foreach (var request in Model.PendingFriendRequests)
-            {
-                <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center gap-3" style="width:80%;">
-                    <div class="position-relative">
+            <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center gap-3" style="width:80%;">
+                <div class="position-relative">
                     <div class="rounded-circle bg-success d-flex align-items-center justify-content-center fw-bold" style="width:42px;height:42px;">
                         <img src="@SD.GetImageUrl(request.SenderAvatarUrl!)" alt="Avatar" class="rounded-circle" style="width:100%;height:100%;object-fit:cover;">
                     </div>
-                    </div>
-                    <div class="flex-grow-1">
-                        <div class="fw-semibold">@request.SenderUserName</div>
-                        <small class="text-secondary">Incoming friend request</small>
-                    </div>
-                    <div class="d-flex gap-2">
-                        <form asp-action="AcceptFriendRequest" method="post">
-                            <input type="hidden" name="id" value="@request.FriendshipId" />
-                            <button type="submit" class="btn btn-success btn-sm d-flex align-items-center justify-content-center" style="width:34px;height:34px;" title="Accept">
-                                <i class="bi bi-check-lg fs-6"></i>
-                            </button>
-                        </form>
-                        <form asp-action="DeclineFriendRequest" method="post">
-                            <input type="hidden" name="id" value="@request.FriendshipId" />
-                            <button type="submit" class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center" style="width:34px;height:34px;" title="Decline">
-                                <i class="bi bi-x-lg fs-6"></i>
-                            </button>
-                        </form>
-                    </div>
                 </div>
-            }
-        </div>
-
-        <!-- Active Friends -->
-        <h2 class="h6 fw-bold text-secondary text-uppercase mb-3 mx-auto" style="letter-spacing:.05em; width:80%;">Active Friends</h2>
-        <div class="d-flex flex-column align-items-center gap-2">
-            @foreach (var friend in Model.Friends)
-            {
-
-                <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center gap-3" style="width:80%;">
-                    <div class="position-relative">
-                        <div class="rounded-circle bg-success d-flex align-items-center justify-content-center fw-bold" style="width:42px;height:42px;">
-                            <img src="@SD.GetImageUrl(friend.FriendAvatarUrl)" alt="Avatar" class="rounded-circle" style="width:100%;height:100%;object-fit:cover;">
-                        </div>
-                        <span class="position-absolute bottom-0 end-0 rounded-circle border border-dark"
-                              data-user-id="@friend.FriendId"
-                              style="width:12px;height:12px;background-color:gray;">
-                        </span>
-                    </div>
-
-                    <div class="flex-grow-1">
-                        <div class="fw-semibold">@friend.FriendDisplayName</div>
-                        <small class="text-secondary">@friend.FriendUserName</small>
-                    </div>
-
-                    <!-- Default actions -->
-                    <div class="friend-actions d-flex gap-2">
-                        <button class="btn btn-primary btn-sm">Message</button>
-                        <button type="button" class="btn btn-outline-danger btn-sm" onclick="showRemoveConfirm(this)">Remove</button>
-                    </div>
-
-                    <!-- Confirmation (hidden by default) -->
-                    <div class="remove-confirm d-none align-items-center gap-2">
-                        <small class="text-secondary me-1">Are you sure?</small>
-                        <form asp-action="RemoveFriend" asp-route-id="@friend.FriendshipId" method="post">
-                            <button type="submit" class="btn btn-danger btn-sm">Yes</button>
-                        </form>
-                        <button type="button" class="btn btn-secondary btn-sm" onclick="cancelRemoveConfirm(this)">No</button>
-                    </div>
+                <div class="flex-grow-1">
+                    <div class="fw-semibold">@request.SenderUserName</div>
+                    <small class="text-secondary">Incoming friend request</small>
                 </div>
-            }
-        </div>
+                <div class="d-flex gap-2">
+                    <form asp-action="AcceptFriendRequest" method="post">
+                        <input type="hidden" name="id" value="@request.FriendshipId" />
+                        <button type="submit" class="btn btn-success btn-sm d-flex align-items-center justify-content-center" style="width:34px;height:34px;" title="Accept">
+                            <i class="bi bi-check-lg fs-6"></i>
+                        </button>
+                    </form>
+                    <form asp-action="DeclineFriendRequest" method="post">
+                        <input type="hidden" name="id" value="@request.FriendshipId" />
+                        <button type="submit" class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center" style="width:34px;height:34px;" title="Decline">
+                            <i class="bi bi-x-lg fs-6"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        }
     </div>
 
-    <nav class="navbar fixed-bottom bg-dark border-top border-secondary">
-        <div class="container">
-            <div class="d-flex justify-content-around align-items-center w-100">
-                <a asp-action="Index" class="btn btn-dark d-flex flex-column align-items-center text-white" data-page="chats">
-                    <i class="bi bi-chat-dots fs-5"></i>
-                    <small>Chats</small>
-                </a>
-                <a class="btn btn-dark d-flex flex-column align-items-center text-secondary" data-page="friends">
-                    <i class="bi bi-people fs-5"></i>
-                    <small>Friends</small>
-                </a>
-                <a asp-action="Servers" class="btn btn-dark d-flex flex-column align-items-center text-secondary" data-page="servers">
-                    <i class="bi bi-hdd-stack fs-5"></i>
-                    <small>Servers</small>
-                </a>
-                <a asp-action="Settings" class="btn btn-dark d-flex flex-column align-items-center text-secondary" data-page="settings">
-                    <i class="bi bi-gear fs-5"></i>
-                    <small>Settings</small>
-                </a>
+    <!-- Active Friends -->
+    <h2 class="h6 fw-bold text-secondary text-uppercase mb-3 mx-auto" style="letter-spacing:.05em; width:80%;">Active Friends</h2>
+    <div class="d-flex flex-column align-items-center gap-2">
+        @foreach (var friend in Model.Friends)
+        {
+
+            <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center gap-3" style="width:80%;">
+                <div class="position-relative">
+                    <div class="rounded-circle bg-success d-flex align-items-center justify-content-center fw-bold" style="width:42px;height:42px;">
+                        <img src="@SD.GetImageUrl(friend.FriendAvatarUrl)" alt="Avatar" class="rounded-circle" style="width:100%;height:100%;object-fit:cover;">
+                    </div>
+                    <span class="position-absolute bottom-0 end-0 rounded-circle border border-dark"
+                          data-user-id="@friend.FriendId"
+                          style="width:12px;height:12px;background-color:gray;">
+                    </span>
+                </div>
+
+                <div class="flex-grow-1">
+                    <div class="fw-semibold">@friend.FriendDisplayName</div>
+                    <small class="text-secondary">@friend.FriendUserName</small>
+                </div>
+
+                <!-- Default actions -->
+                <div class="friend-actions d-flex gap-2">
+                    <button class="btn btn-primary btn-sm">Message</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm" onclick="showRemoveConfirm(this)">Remove</button>
+                </div>
+
+                <!-- Confirmation (hidden by default) -->
+                <div class="remove-confirm d-none align-items-center gap-2">
+                    <small class="text-secondary me-1">Are you sure?</small>
+                    <form asp-action="RemoveFriend" asp-route-id="@friend.FriendshipId" method="post">
+                        <button type="submit" class="btn btn-danger btn-sm">Yes</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="cancelRemoveConfirm(this)">No</button>
+                </div>
             </div>
+        }
+    </div>
+</div>
+
+<nav class="navbar fixed-bottom bg-dark border-top border-secondary">
+    <div class="container">
+        <div class="d-flex justify-content-around align-items-center w-100">
+            <a asp-action="Index" class="btn btn-dark d-flex flex-column align-items-center text-white" data-page="chats">
+                <i class="bi bi-chat-dots fs-5"></i>
+                <small>Chats</small>
+            </a>
+            <a class="btn btn-dark d-flex flex-column align-items-center text-secondary" data-page="friends">
+                <i class="bi bi-people fs-5"></i>
+                <small>Friends</small>
+            </a>
+            <a asp-action="Servers" class="btn btn-dark d-flex flex-column align-items-center text-secondary" data-page="servers">
+                <i class="bi bi-hdd-stack fs-5"></i>
+                <small>Servers</small>
+            </a>
+            <a asp-action="Settings" class="btn btn-dark d-flex flex-column align-items-center text-secondary" data-page="settings">
+                <i class="bi bi-gear fs-5"></i>
+                <small>Settings</small>
+            </a>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    @section Scripts {
-        <script>
-            function showRemoveConfirm(btn) {
-                var card = btn.closest('.rounded-3');
-                card.querySelector('.friend-actions').classList.add('d-none');
-                var confirm = card.querySelector('.remove-confirm');
-                confirm.classList.remove('d-none');
-                confirm.classList.add('d-flex');
-            }
+@section Scripts {
+    <script>
+        function showRemoveConfirm(btn) {
+            var card = btn.closest('.rounded-3');
+            card.querySelector('.friend-actions').classList.add('d-none');
+            var confirm = card.querySelector('.remove-confirm');
+            confirm.classList.remove('d-none');
+            confirm.classList.add('d-flex');
+        }
 
-            function cancelRemoveConfirm(btn) {
-                var card = btn.closest('.rounded-3');
-                var confirm = card.querySelector('.remove-confirm');
-                confirm.classList.add('d-none');
-                confirm.classList.remove('d-flex');
-                card.querySelector('.friend-actions').classList.remove('d-none');
-            }
-        </script>
-    }
+        function cancelRemoveConfirm(btn) {
+            var card = btn.closest('.rounded-3');
+            var confirm = card.querySelector('.remove-confirm');
+            confirm.classList.add('d-none');
+            confirm.classList.remove('d-flex');
+            card.querySelector('.friend-actions').classList.remove('d-none');
+        }
+    </script>
+}

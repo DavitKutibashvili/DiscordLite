@@ -29,7 +29,7 @@ namespace DiscordLite_API.Services
             }
             user.DisplayName = newDisplayName;
             await _db.SaveChangesAsync();
-            return ApiResponse<object>.NoContent("Display name updated successfully");
+            return ApiResponse<object>.Ok(null!, "Display name updated successfully");
         }
     }
 }

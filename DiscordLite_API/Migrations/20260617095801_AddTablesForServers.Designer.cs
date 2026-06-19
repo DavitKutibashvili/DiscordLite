@@ -4,6 +4,7 @@ using DiscordLite_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DiscordLite_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260617095801_AddTablesForServers")]
+    partial class AddTablesForServers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -208,12 +211,6 @@ namespace DiscordLite_API.Migrations
 
                     b.Property<string>("IconUrl")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InviteCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("InviteExpiresAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()

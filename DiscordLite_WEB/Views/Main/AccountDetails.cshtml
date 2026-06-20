@@ -5,127 +5,144 @@
 }
 @model UserDTO
 
-<div id="account-details-page" class="p-3 pb-5">
-    <div class="d-flex align-items-center gap-2 mb-4">
-        <a asp-action="Settings" class="btn btn-dark p-1">
-            <i class="bi bi-chevron-left fs-5"></i>
-        </a>
-        <h1 class="h4 fw-bold mb-0">Account Details</h1>
-    </div>
-    @if (TempData["success"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            @TempData["success"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    }
-    @if (TempData["error"] != null)
-    {
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            @TempData["error"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    }
-    @* Avatar Section *@
-    <div class="bg-secondary bg-opacity-25 rounded-3 p-3 mb-4 mx-auto" style="width:90%;">
-        <div class="d-flex align-items-center gap-3 mb-3">
-            <div id="avatarCircle" class="rounded-circle flex-shrink-0 overflow-hidden" style="width:64px;height:64px;">
-                <img id="avatarPreview" src="@SD.GetImageUrl(Model.AvatarUrl!)" alt="Avatar" class="rounded-circle" style="width:64px;height:64px;object-fit:cover;" />
-            </div>
-            <div>
-                <div class="fs-6 fw-semibold">Profile Picture</div>
-                <small class="text-secondary">JPG or PNG, max 5MB</small>
-            </div>
-        </div>
-        <form asp-controller="Main" asp-action="UpdateAvatar" method="post" enctype="multipart/form-data">
-            <input type="file" id="avatarInput" name="file" accept=".jpg,.jpeg,.png" class="d-none" />
-            <div class="d-flex gap-2">
-                <button type="button" class="btn btn-primary btn-sm flex-grow-1" onclick="document.getElementById('avatarInput').click()">
-                    <i class="bi bi-upload me-1"></i>Change Photo
-                </button>
-                <button type="submit" id="saveAvatarBtn" class="btn btn-success btn-sm d-none">
-                    <i class="bi bi-check me-1"></i>Save
-                </button>
-            </div>
-        </form>
-        <div id="avatarToast" class="mt-2 d-none small rounded-2 px-2 py-1"></div>
-    </div>
+<div id="friends-page">
+    <div style="margin: 0 10%;">
 
-    @* Other Settings *@
-    <div class="d-flex flex-column align-items-center gap-2 mb-4">
-        <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center justify-content-between" style="width:90%;">
-            <span class="fw-medium">Username</span>
-            <div class="d-flex align-items-center gap-2">
-                <small class="text-secondary">@Model.UserName</small>
-                <i class="bi bi-chevron-right text-secondary"></i>
-            </div>
+        <!-- Header -->
+        <div class="d-flex align-items-center gap-2 mb-4">
+            <a asp-action="Settings" style="color: var(--dl-muted); text-decoration: none; font-size: 1.3rem;">
+                <i class="bi bi-chevron-left"></i>
+            </a>
+            <h1 class="dl-page-title mb-0">Account Details</h1>
         </div>
-        <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center justify-content-between" style="width:90%;">
-            <span class="fw-medium">Display Name</span>
-            <div class="d-flex align-items-center gap-2" id="displayname-view">
-                <small class="text-secondary">@Model.DisplayName</small>
-                <i class="bi bi-pencil text-secondary" style="cursor:pointer;" onclick="toggleDisplayNameEdit()"></i>
+
+        <!-- Alerts -->
+        @if (TempData["success"] != null)
+        {
+            <div class="dl-alert dl-alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill"></i>
+                @TempData["success"]
+                <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"></button>
             </div>
-            <form asp-action="UpdateDisplayName" asp-controller="Main" method="post" id="displayname-form" class="d-none d-flex align-items-center gap-2">
-                <input type="text" name="newDisplayName" value="@Model.DisplayName" class="form-control form-control-sm" style="width:160px;" maxlength="32" />
-                <button type="submit" class="btn btn-primary btn-sm">Save</button>
-                <button type="button" class="btn btn-secondary btn-sm" onclick="toggleDisplayNameEdit()">Cancel</button>
+        }
+        @if (TempData["error"] != null)
+        {
+            <div class="dl-alert dl-alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-circle-fill"></i>
+                @TempData["error"]
+                <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        <!-- Avatar Section -->
+        <p class="dl-section-label">Profile Picture</p>
+        <div class="dl-friend-card mb-4" style="flex-direction: column; align-items: flex-start; gap: 1rem;">
+            <div class="d-flex align-items-center gap-3">
+                <div class="dl-avatar-wrap">
+                    <img id="avatarPreview" src="@SD.GetImageUrl(Model.AvatarUrl!)" alt="Avatar" class="dl-avatar" />
+                </div>
+                <div>
+                    <div class="dl-friend-name">Profile Picture</div>
+                    <div class="dl-friend-sub">JPG or PNG, max 5MB</div>
+                </div>
+            </div>
+            <form asp-controller="Main" asp-action="UpdateAvatar" method="post" enctype="multipart/form-data" class="w-100">
+                <input type="file" id="avatarInput" name="file" accept=".jpg,.jpeg,.png" class="d-none" />
+                <div class="d-flex gap-2">
+                    <button type="button" class="dl-btn-primary flex-grow-1" onclick="document.getElementById('avatarInput').click()">
+                        <i class="bi bi-upload me-1"></i>Change Photo
+                    </button>
+                    <button type="submit" id="saveAvatarBtn" class="dl-btn-primary d-none" style="background: var(--dl-success);">
+                        <i class="bi bi-check me-1"></i>Save
+                    </button>
+                </div>
+            </form>
+            <div id="avatarToast" class="d-none small rounded-2 px-2 py-1"></div>
+        </div>
+
+        <!-- Account Fields -->
+        <p class="dl-section-label">Account</p>
+
+        <div class="dl-friend-card">
+            <div class="dl-friend-info">
+                <div class="dl-friend-name">Username</div>
+            </div>
+            <div class="dl-friend-sub">@Model.UserName</div>
+            <i class="bi bi-chevron-right" style="color: var(--dl-muted);"></i>
+        </div>
+
+        <div class="dl-friend-card" style="flex-wrap: wrap;">
+            <div class="dl-friend-info">
+                <div class="dl-friend-name">Display Name</div>
+            </div>
+            <div id="displayname-view" class="d-flex align-items-center gap-2">
+                <span class="dl-friend-sub">@Model.DisplayName</span>
+                <i class="bi bi-pencil" style="color: var(--dl-muted); cursor:pointer;" onclick="toggleDisplayNameEdit()"></i>
+            </div>
+            <form asp-action="UpdateDisplayName" asp-controller="Main" method="post" id="displayname-form" class="d-none d-flex align-items-center gap-2 w-100 mt-2">
+                <input type="text" name="newDisplayName" value="@Model.DisplayName" class="dl-input" style="max-width: 200px;" maxlength="32" />
+                <button type="submit" class="dl-btn-primary">Save</button>
+                <button type="button" class="dl-btn-primary" style="background: var(--dl-surface-hover);" onclick="toggleDisplayNameEdit()">Cancel</button>
             </form>
         </div>
-        <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center justify-content-between" style="width:90%;">
-            <span class="fw-medium">Email</span>
-            <div class="d-flex align-items-center gap-2">
-                <small class="text-secondary">john@example.com</small>
-                <i class="bi bi-chevron-right text-secondary"></i>
-            </div>
-        </div>
-        <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center justify-content-between" style="width:90%;">
-            <span class="fw-medium">Phone Number</span>
-            <div class="d-flex align-items-center gap-2">
-                <small class="text-secondary">Not set</small>
-                <i class="bi bi-chevron-right text-secondary"></i>
-            </div>
-        </div>
-        <div class="bg-secondary bg-opacity-25 rounded-3 p-3 d-flex align-items-center justify-content-between" style="width:90%;">
-            <span class="fw-medium">Password</span>
-            <div class="d-flex align-items-center gap-2">
-                <small class="text-secondary">••••••••</small>
-                <i class="bi bi-chevron-right text-secondary"></i>
-            </div>
-        </div>
-    </div>
 
-    <div class="mx-auto" style="width:90%;">
-        <button class="btn btn-outline-danger py-2 fw-medium w-100">Delete Account</button>
+        <div class="dl-friend-card">
+            <div class="dl-friend-info">
+                <div class="dl-friend-name">Email</div>
+            </div>
+            <div class="dl-friend-sub">john@example.com</div>
+            <i class="bi bi-chevron-right" style="color: var(--dl-muted);"></i>
+        </div>
+
+        <div class="dl-friend-card">
+            <div class="dl-friend-info">
+                <div class="dl-friend-name">Phone Number</div>
+            </div>
+            <div class="dl-friend-sub">Not set</div>
+            <i class="bi bi-chevron-right" style="color: var(--dl-muted);"></i>
+        </div>
+
+        <div class="dl-friend-card">
+            <div class="dl-friend-info">
+                <div class="dl-friend-name">Password</div>
+            </div>
+            <div class="dl-friend-sub">••••••••</div>
+            <i class="bi bi-chevron-right" style="color: var(--dl-muted);"></i>
+        </div>
+
+        <hr class="dl-divider" />
+
+        <button class="dl-btn-primary w-100 py-2" style="background: transparent; border: 1px solid var(--dl-danger); color: var(--dl-danger);">
+            Delete Account
+        </button>
+
     </div>
 </div>
 
-<nav class="navbar fixed-bottom bg-dark border-top border-secondary">
-    <div class="container">
-        <div class="d-flex justify-content-around align-items-center w-100">
-            <a asp-action="Index" class="btn btn-dark d-flex flex-column align-items-center text-secondary" data-page="chats">
-                <i class="bi bi-chat-dots fs-5"></i>
-                <small>Chats</small>
-            </a>
-            <a asp-action="Friends" class="btn btn-dark d-flex flex-column align-items-center text-secondary" data-page="friends">
-                <i class="bi bi-people fs-5"></i>
-                <small>Friends</small>
-            </a>
-            <a asp-action="Servers" class="btn btn-dark d-flex flex-column align-items-center text-secondary" data-page="servers">
-                <i class="bi bi-hdd-stack fs-5"></i>
-                <small>Servers</small>
-            </a>
-            <a asp-action="Settings" class="btn btn-dark d-flex flex-column align-items-center text-white" data-page="settings">
-                <i class="bi bi-gear fs-5"></i>
-                <small>Settings</small>
-            </a>
-        </div>
+<nav class="bottom-nav">
+    <div class="nav-inner">
+        <a asp-action="Index" class="nav-item">
+            <i class="bi bi-chat-dots"></i>
+            <span>Chats</span>
+        </a>
+        <a asp-action="Friends" class="nav-item">
+            <i class="bi bi-people-fill"></i>
+            <span>Friends</span>
+        </a>
+        <a asp-action="Servers" class="nav-item">
+            <i class="bi bi-hdd-stack"></i>
+            <span>Servers</span>
+        </a>
+        <a asp-action="Settings" class="nav-item active">
+            <i class="bi bi-gear"></i>
+            <span>Settings</span>
+        </a>
     </div>
 </nav>
 
 @section Scripts {
     <script>
-            document.getElementById('avatarInput').addEventListener('change', function () {
+        document.getElementById('avatarInput').addEventListener('change', function () {
             const file = this.files[0];
             if (!file) return;
 
@@ -135,9 +152,9 @@
 
             const reader = new FileReader();
             reader.onload = e => {
-            document.getElementById('avatarPreview').src = e.target.result;
-            document.getElementById('saveAvatarBtn').classList.remove('d-none');
-        };
+                document.getElementById('avatarPreview').src = e.target.result;
+                document.getElementById('saveAvatarBtn').classList.remove('d-none');
+            };
             reader.readAsDataURL(file);
         });
 
@@ -148,8 +165,7 @@
             t.classList.remove('d-none');
             setTimeout(() => t.classList.add('d-none'), 4000);
         }
-    </script>
-    <script>
+
         function toggleDisplayNameEdit() {
             document.getElementById('displayname-view').classList.toggle('d-none');
             document.getElementById('displayname-form').classList.toggle('d-none');

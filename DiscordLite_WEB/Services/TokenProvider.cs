@@ -65,7 +65,7 @@ namespace DiscordLite_WEB.Services
                 return new ClaimsPrincipal(identity);
 
             }
-            catch (Exception ex)
+            catch
             {
                 return null;
             }

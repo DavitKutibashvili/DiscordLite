@@ -19,7 +19,7 @@
 #friends-page {
     background: var(--dl-bg);
     min-height: 100vh;
-    padding: 2rem 1rem 6rem;
+    padding: 2rem 1rem 5rem;
     font-family: 'gg sans', 'Noto Sans', system-ui, sans-serif;
     color: var(--dl-text);
 }

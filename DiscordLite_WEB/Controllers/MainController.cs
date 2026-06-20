@@ -13,11 +13,13 @@ namespace DiscordLite_WEB.Controllers
         private readonly IFriendService _friendService;
         private readonly IDMChatService _dmChatService;
         private readonly IUserService _userService;
-        public MainController(IFriendService friendService, IDMChatService dMChatService, IUserService userService)
+        private readonly IServerService _serverService;
+        public MainController(IFriendService friendService, IDMChatService dMChatService, IUserService userService, IServerService serverService)
         {
             _friendService = friendService;
             _dmChatService = dMChatService;
             _userService = userService;
+            _serverService = serverService;
         }
         public async Task<IActionResult> Index()
         {
@@ -79,7 +81,7 @@ namespace DiscordLite_WEB.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "Failed to load chat: " + ex.Message;
+                TempData["error"] = "Failed to load chat: " + ex.Message;
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -88,7 +90,7 @@ namespace DiscordLite_WEB.Controllers
             var response = await _userService.GetUserProfileAsync<ApiResponse<UserDTO>>();
             if (response == null || response.Data == null)
             {
-                TempData["Error"] = response?.Message ?? "Failed to load user profile";
+                TempData["error"] = response?.Message ?? "Failed to load user profile";
                 return RedirectToAction("Index", "Home");
             }
             return View(response.Data);
@@ -98,7 +100,7 @@ namespace DiscordLite_WEB.Controllers
             var response = await _userService.GetUserProfileAsync<ApiResponse<UserDTO>>();
             if (response == null || response.Data == null)
             {
-                TempData["Error"] = response?.Message ?? "Failed to load user profile";
+                TempData["error"] = response?.Message ?? "Failed to load user profile";
                 return RedirectToAction("Index", "Home");
             }
             return View(response.Data);
@@ -108,7 +110,7 @@ namespace DiscordLite_WEB.Controllers
         {
             var response = await _userService.UpdateUserAvatarAsync<ApiResponse<string>>(file);
             if (response == null || !response.Success)
-                TempData["Error"] = response?.Message ?? "Failed to upload avatar";
+                TempData["error"] = response?.Message ?? "Failed to upload avatar";
 
             return RedirectToAction(nameof(AccountDetails));
         }
@@ -117,9 +119,9 @@ namespace DiscordLite_WEB.Controllers
         {
             var response = await _userService.UpdateDisplayNameAsync<ApiResponse<object>>(newDisplayName);
             if (response == null || !response.Success)
-                TempData["Error"] = response?.Message ?? "Failed to update display name";
+                TempData["error"] = response?.Message ?? "Failed to update display name";
             else
-                TempData["Success"] = "Display name updated successfully";
+                TempData["success"] = "Display name updated successfully";
             return RedirectToAction(nameof(AccountDetails));
         }
         public async Task<IActionResult> Friends()
@@ -142,7 +144,7 @@ namespace DiscordLite_WEB.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "Failed to load friends " + ex.ToString();
+                TempData["error"] = "Failed to load friends " + ex.ToString();
             }
             return View(friendshipVM);
         }
@@ -163,7 +165,7 @@ namespace DiscordLite_WEB.Controllers
             }
             catch(Exception ex)
             {
-                TempData["Error"] = "Failed to send friend request " + ex.ToString();
+                TempData["error"] = "Failed to send friend request " + ex.ToString();
             }
             return RedirectToAction(nameof(Friends));
         }
@@ -174,13 +176,13 @@ namespace DiscordLite_WEB.Controllers
             {
                 var result = await _friendService.AcceptFriendRequestAsync<ApiResponse<FriendshipDTO>>(id);
                 if (result == null || !result.Success)
-                    TempData["Error"] = "Failed to accept friend request";
+                    TempData["error"] = "Failed to accept friend request";
                 else
-                    TempData["Success"] = "Friend request accepted successfully";
+                    TempData["success"] = "Friend request accepted successfully";
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "Failed to accept friend request " + ex.ToString();
+                TempData["error"] = "Failed to accept friend request " + ex.ToString();
             }
 
             return RedirectToAction(nameof(Friends));
@@ -192,13 +194,13 @@ namespace DiscordLite_WEB.Controllers
             {
                 var result = await _friendService.DeclineFriendRequestAsync<ApiResponse<FriendshipDTO>>(id);
                 if(result == null || !result.Success)
-                    TempData["Error"] = "Failed to decline friend request";
+                    TempData["error"] = "Failed to decline friend request";
                 else
-                    TempData["Success"] = "Friend request declined successfully";
+                    TempData["success"] = "Friend request declined successfully";
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "Failed to decline friend request " + ex.ToString();
+                TempData["error"] = "Failed to decline friend request " + ex.ToString();
             }
             return RedirectToAction(nameof(Friends));
         }
@@ -208,19 +210,79 @@ namespace DiscordLite_WEB.Controllers
             {
                 var result = await _friendService.RemoveFriendAsync<ApiResponse<FriendshipDTO>>(id);
                 if (result == null || !result.Success)
-                    TempData["Error"] = "Failed to remove friend";
+                    TempData["error"] = "Failed to remove friend";
                 else
-                    TempData["Success"] = "Friend removed successfully";
+                    TempData["success"] = "Friend removed successfully";
             }
             catch (Exception ex)
             {
-                TempData["Error"] = "Failed to remove friend " + ex.ToString();
+                TempData["error"] = "Failed to remove friend " + ex.ToString();
             }
             return RedirectToAction(nameof(Friends));
         }
         public async Task<IActionResult> Servers()
         {
-            return View();
+            List<ServerDTO> serverList = new();
+            try
+            {
+                var result = await _serverService.GetUserServersAsync<ApiResponse<List<ServerDTO>>>();
+                if (result == null || !result.Success)
+                    TempData["error"] = "Failed to load servers";
+
+                if(result?.Data != null && result.Success)
+                {
+                    serverList = result.Data;
+                }
+            }
+            catch(Exception ex)
+            {
+                TempData["error"] = "Failed to retrieve servers " + ex.ToString();
+            }
+            return View(serverList);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateServer(string name)
+        {
+            try
+            {
+                var result = await _serverService.CreateServerAsync<ApiResponse<object>>(name);
+                if (result == null || !result.Success)
+                    TempData["error"] = result?.Message ?? "Failed to create server.";
+                else
+                    TempData["success"] = "Server created successfully.";
+            }
+            catch(Exception ex)
+            {
+                TempData["error"] = "Failed to create server: " + ex.Message;
+            }
+            return RedirectToAction(nameof(Servers));
+        }
+        [HttpPost]
+        public async Task<IActionResult> JoinServer(string inviteCode)
+        {
+            try
+            {
+                var result = await _serverService.JoinServerAsync<ApiResponse<object>>(inviteCode);
+                if (result == null || !result.Success)
+                    TempData["error"] = result?.Message ?? "Failed to join server";
+                else
+                    TempData["success"] = "Successfully joined server";
+            }
+            catch (Exception ex)
+            {
+                TempData["error"] = "Failed to create server: " + ex.Message;
+            }
+            return RedirectToAction(nameof(Servers));
+        }
+        public async Task<IActionResult> Server(int id)
+        {
+            var result = await _serverService.GetServerByIdAsync<ApiResponse<ServerDTO>>(id);
+            if (result == null || !result.Success)
+            {
+                TempData["error"] = result?.Message ?? "Failed to load server.";
+                return RedirectToAction(nameof(Servers));
+            }
+            return View(result.Data);
         }
     }
 }

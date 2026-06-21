@@ -12,5 +12,8 @@ namespace DiscordLite_DTO
         public string? IconUrl { get; set; }
         public string OwnerId { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string? InviteCode { get; set; }
+        public List<ServerChannelDTO> Channels { get; set; } = new();
+        public List<ServerMemberDTO> Members { get; set; } = new();
     }
 }

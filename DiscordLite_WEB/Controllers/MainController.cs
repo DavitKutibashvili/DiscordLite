@@ -4,6 +4,7 @@ using DiscordLite_WEB.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Threading.Channels;
 
 namespace DiscordLite_WEB.Controllers
 {
@@ -274,7 +275,7 @@ namespace DiscordLite_WEB.Controllers
             }
             return RedirectToAction(nameof(Servers));
         }
-        public async Task<IActionResult> Server(int id)
+        public async Task<IActionResult> Server(int id, int? channelId)
         {
             var result = await _serverService.GetServerByIdAsync<ApiResponse<ServerDTO>>(id);
             if (result == null || !result.Success)
@@ -282,6 +283,11 @@ namespace DiscordLite_WEB.Controllers
                 TempData["error"] = result?.Message ?? "Failed to load server.";
                 return RedirectToAction(nameof(Servers));
             }
+            var selectedChannel = result.Data.Channels.FirstOrDefault(c => c.Id == channelId)
+                      ?? result.Data.Channels.FirstOrDefault();
+
+            ViewBag.SelectedChannelId = selectedChannel?.Id;
+            ViewBag.SelectedChannelName = selectedChannel?.Name;
             return View(result.Data);
         }
     }

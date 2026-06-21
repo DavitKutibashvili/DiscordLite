@@ -100,15 +100,19 @@ namespace DiscordLite_API.Services
             {
                 return ApiResponse<ServerDTO>.BadRequest("Invalid server ID.");
             }
-            var server = await _db.Servers.FindAsync(serverId);
-            if (server == null)
-            {
-                return ApiResponse<ServerDTO>.NotFound("Server not found.");
-            }
             var isMember = await _db.ServerMembers.AnyAsync(sm => sm.ServerId == serverId && sm.UserId == userId);
             if (!isMember)
             {
                 return ApiResponse<ServerDTO>.Forbidden("You are not a member of this server.");
+            }
+            var server = await _db.Servers
+                .Include(s => s.Members)
+                    .ThenInclude(m => m.User)
+                .Include(s => s.Channels)
+                .FirstOrDefaultAsync(s => s.Id == serverId);
+            if (server == null)
+            {
+                return ApiResponse<ServerDTO>.NotFound("Server not found.");
             }
             return ApiResponse<ServerDTO>.Ok(MapToDTO(server), "Server retrieved successfully.");
         }
@@ -216,13 +220,28 @@ namespace DiscordLite_API.Services
                 .Select(_ => chars[Random.Shared.Next(chars.Length)])
                 .ToArray());
         }
-        private ServerDTO MapToDTO(Server s) => new ServerDTO 
+        private ServerDTO MapToDTO(Server s) => new ServerDTO
         {
             Id = s.Id,
             Name = s.Name,
             Description = s.Description,
             IconUrl = s.IconUrl,
-            OwnerId = s.OwnerId
+            OwnerId = s.OwnerId,
+            CreatedAt = s.CreatedAt,
+            InviteCode = s.InviteCode,
+            Channels = s.Channels?.Select(c => new ServerChannelDTO
+            {
+                Id = c.Id,
+                Name = c.Name
+            }).ToList() ?? new(),
+            Members = s.Members?.Select(m => new ServerMemberDTO
+            {
+                UserId = m.UserId,
+                UserName = m.User.UserName!,
+                DisplayName = m.User.DisplayName,
+                AvatarUrl = m.User.AvatarUrl,
+                IsOwner = m.UserId == s.OwnerId
+            }).ToList() ?? new()
         };
     }
 }

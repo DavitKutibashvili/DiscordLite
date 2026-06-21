@@ -1,6 +1,10 @@
 ﻿(function () {
     // ── Config ──────────────────────────────────────────────────────────────
     const API_BASE = document.querySelector('meta[name="api-base-url"]')?.content ?? '';
+    async function getLatestToken() {
+        const res = await fetch('/auth/GetCurrentToken');
+        return await res.text();
+    }
 
     // ── State ────────────────────────────────────────────────────────────────
     let connection;
@@ -113,16 +117,16 @@
     // ── SignalR connection ────────────────────────────────────────────────────
     async function startConnection() {
         connection = new signalR.HubConnectionBuilder()
-            .withUrl(`${API_BASE}/hubs/dmchat?access_token=${encodeURIComponent(getToken())}&otherUserId=${OTHER_USER}`)
+            .withUrl(`${API_BASE}/hubs/dmchat?otherUserId=${OTHER_USER}`, {
+                accessTokenFactory: async () => await getLatestToken()
+            })
             .withAutomaticReconnect([0, 2000, 5000, 10000])
             .build();
 
-        // incoming message
         connection.on('ReceiveMessage', (msg) => {
             appendMessage(msg);
         });
 
-        // typing indicators
         connection.on('UserTyping', (userId) => {
             if (userId !== CURRENT_USER) {
                 typingEl.classList.add('visible');
@@ -135,14 +139,11 @@
             if (userId !== CURRENT_USER) typingEl.classList.remove('visible');
         });
 
-        // presence
         connection.on('UserOnline', (userId) => { if (userId === OTHER_USER) statusDot.classList.add('online'); });
         connection.on('UserOffline', (userId) => { if (userId === OTHER_USER) statusDot.classList.remove('online'); });
 
         connection.onreconnecting(() => showToast('Reconnecting…'));
-        connection.onreconnected(() => {
-            showToast('Reconnected');
-        });
+        connection.onreconnected(() => showToast('Reconnected'));
         connection.onclose(() => showToast('Disconnected', true));
 
         try {

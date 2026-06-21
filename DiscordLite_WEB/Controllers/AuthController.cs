@@ -108,5 +108,10 @@ namespace DiscordLite_WEB.Controllers
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
+        [HttpGet]
+        public IActionResult GetCurrentToken()
+        {
+            return Ok(_tokenProvider.GetAccessToken());
+        }
     }
 }

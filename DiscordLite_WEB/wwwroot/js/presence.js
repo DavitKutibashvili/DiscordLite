@@ -1,7 +1,11 @@
 ﻿const API_BASE = document.querySelector('meta[name="api-base-url"]').content;
-const token = document.querySelector('meta[name="access-token"]').content;
 
 let presenceConnection;
+
+async function getLatestToken() {
+    const res = await fetch('/auth/GetCurrentToken');
+    return await res.text();
+}
 
 function setPresence(userId, isOnline) {
     document.querySelectorAll(`[data-user-id="${userId}"]`).forEach(el => {
@@ -15,7 +19,9 @@ function setPresence(userId, isOnline) {
 
 async function startPresenceConnection() {
     presenceConnection = new signalR.HubConnectionBuilder()
-        .withUrl(`${API_BASE}/hubs/presence?access_token=${encodeURIComponent(token)}`)
+        .withUrl(`${API_BASE}/hubs/presence`, {
+            accessTokenFactory: async () => await getLatestToken()
+        })
         .withAutomaticReconnect([0, 2000, 5000, 10000])
         .build();
 
@@ -32,7 +38,7 @@ async function startPresenceConnection() {
     });
 
     presenceConnection.onreconnected(() => {
-        // re-seed is handled automatically by OnConnectedAsync firing again
+        // OnConnectedAsync re-fires automatically, re-seeding online users
     });
 
     try {

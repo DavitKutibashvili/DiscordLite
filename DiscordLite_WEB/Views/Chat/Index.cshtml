@@ -1,0 +1,61 @@
+﻿@using DiscordLite_Utility
+@using DiscordLite_WEB.ViewModels
+@{
+    ViewData["Title"] = "Discord Lite - Chats";
+}
+@model DMChatsVM
+
+<div id="friends-page">
+    <div style="margin: 0 10%;">
+        <h1 class="dl-page-title">Chats</h1>
+
+        @foreach (var chat in Model.DMChats)
+        {
+            var otherUserName = chat.User1Id == Model.CurrentUserId
+                ? chat.User2UserName
+                : chat.User1UserName;
+            var otherDisplayName = chat.User1Id == Model.CurrentUserId
+                ? chat.User2DisplayName
+                : chat.User1DisplayName;
+            var otherAvatarUrl = chat.User1Id == Model.CurrentUserId
+                ? chat.User2AvatarUrl
+                : chat.User1AvatarUrl;
+            var otherUserId = chat.User1Id == Model.CurrentUserId
+                ? chat.User2Id
+                : chat.User1Id;
+
+            <a asp-action="OpenChat" asp-route-chatId="@chat.ChatId" class="dl-friend-card text-decoration-none">
+                <div class="dl-avatar-wrap">
+                    <img src="@SD.GetImageUrl(otherAvatarUrl)" alt="Avatar" class="dl-avatar" />
+                    <span class="dl-presence" data-user-id="@otherUserId"></span>
+                </div>
+                <div class="dl-friend-info">
+                    <div class="dl-friend-name">@otherDisplayName</div>
+                    <div class="dl-friend-sub">@otherUserName</div>
+                </div>
+                <i class="bi bi-chevron-right" style="color: var(--dl-muted);"></i>
+            </a>
+        }
+    </div>
+</div>
+
+<nav class="bottom-nav">
+    <div class="nav-inner">
+        <a class="nav-item active">
+            <i class="bi bi-chat-dots"></i>
+            <span>Chats</span>
+        </a>
+        <a asp-controller="Friend" class="nav-item">
+            <i class="bi bi-people-fill"></i>
+            <span>Friends</span>
+        </a>
+        <a asp-controller="Server" class="nav-item">
+            <i class="bi bi-hdd-stack"></i>
+            <span>Servers</span>
+        </a>
+        <a asp-controller="Setting" class="nav-item">
+            <i class="bi bi-gear"></i>
+            <span>Settings</span>
+        </a>
+    </div>
+</nav>

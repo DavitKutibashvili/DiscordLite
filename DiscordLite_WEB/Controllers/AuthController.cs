@@ -39,7 +39,7 @@ namespace DiscordLite_WEB.Controllers
                     {
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                         _tokenProvider.SetToken(response.Data.AccessToken, response.Data.RefreshToken);
-                        return RedirectToAction("Index", "Main");
+                        return RedirectToAction("Index", "Chat");
                     }
                     else
                     {

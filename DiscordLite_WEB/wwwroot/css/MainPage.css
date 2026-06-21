@@ -23,6 +23,9 @@
     font-family: 'gg sans', 'Noto Sans', system-ui, sans-serif;
     color: var(--dl-text);
 }
+.dl-btn-msg {
+    text-decoration: none;
+}
 
 .dl-page-title {
     font-size: 1.25rem;
@@ -50,6 +53,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    position: relative;
 }
 
 .dl-alert-success {
@@ -67,7 +71,10 @@
 .dl-alert .btn-close {
     filter: invert(1);
     opacity: 0.6;
-    margin-left: auto;
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .dl-add-friend-box {

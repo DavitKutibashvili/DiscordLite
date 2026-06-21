@@ -10,7 +10,7 @@ namespace DiscordLite_WEB.Controllers
         {
             if(User.Identity?.IsAuthenticated == true)
             {
-                return RedirectToAction("Index", "Main");
+                return RedirectToAction("Index", "Chat");
             }
             return View();
         }

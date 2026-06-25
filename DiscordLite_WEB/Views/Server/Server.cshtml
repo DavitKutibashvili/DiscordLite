@@ -1,4 +1,5 @@
-﻿@using DiscordLite_DTO
+﻿@using System.Security.Claims
+@using DiscordLite_DTO
 @using DiscordLite_Utility
 @{
     ViewData["Title"] = "Discord Lite - " + Model.Name;
@@ -351,10 +352,13 @@
                 t.classList.toggle('active', i === 0);
             });
         }
-                
-
-        // SignalR presence integration point
-        // data-user-id attributes on .member-presence dots are ready
-        // Same pattern as Friends page
     </script>
+
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+    <script>
+        const CURRENT_USER = "@User.FindFirstValue(ClaimTypes.NameIdentifier)";
+        const SELECTED_CHANNEL_ID = @(ViewBag.SelectedChannelId?.ToString() ?? "null");
+    </script>
+    <script src="~/js/channel.js"></script>
+
 }

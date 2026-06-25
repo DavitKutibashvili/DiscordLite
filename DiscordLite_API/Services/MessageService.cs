@@ -49,6 +49,10 @@ namespace DiscordLite_API.Services
             {
                 return ApiResponse<MessageDTO>.NotFound("User not found");
             }
+            if (string.IsNullOrWhiteSpace(content))
+                return ApiResponse<MessageDTO>.BadRequest("Message cannot be empty");
+            if (content.Length > 2000)
+                return ApiResponse<MessageDTO>.BadRequest("Message cannot exceed 2000 characters");
             var chat = await _db.DirectMessageChats.FindAsync(chatId);
             if(chat == null)
             {

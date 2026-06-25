@@ -89,6 +89,8 @@ builder.Services.AddSingleton<IPresenceService, PresenceService>();
 builder.Services.AddScoped<IAvatarService, AvatarService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IServerService, ServerService>();
+builder.Services.AddScoped<IChannelMessageService, ChannelMessageService>();
+builder.Services.AddScoped<IChannelService, ChannelService>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi(options =>
 {
@@ -137,12 +139,12 @@ builder.Services.AddAutoMapper(u =>
     .ForMember(dest => dest.User2DisplayName, opt => opt.MapFrom(src => src.User2.DisplayName))
     .ForMember(dest => dest.User1AvatarUrl, opt => opt.MapFrom(src => src.User1.AvatarUrl))
     .ForMember(dest => dest.User2AvatarUrl, opt => opt.MapFrom(src => src.User2.AvatarUrl));
-    u.CreateMap<Message, MessageDTO>()
-    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-    .ForMember(dest => dest.SenderId, opt => opt.MapFrom(src => src.SenderId))
+    u.CreateMap<ChannelMessage, ChannelMessageDTO>()
     .ForMember(dest => dest.SenderUserName, opt => opt.MapFrom(src => src.Sender.UserName))
-    .ForMember(dest => dest.SenderDisplayName, opt => opt.MapFrom(src => src.Sender.DisplayName))
-    .ForMember(dest => dest.SentAt, opt => opt.MapFrom(src => src.SentAt));
+    .ForMember(dest => dest.SenderDisplayName, opt => opt.MapFrom(src => src.Sender.DisplayName));
+    u.CreateMap<Message, MessageDTO>()
+    .ForMember(dest => dest.SenderUserName, opt => opt.MapFrom(src => src.Sender.UserName))
+    .ForMember(dest => dest.SenderDisplayName, opt => opt.MapFrom(src => src.Sender.DisplayName));
 });
 builder.WebHost.UseWebRoot("wwwroot");
 var app = builder.Build();
@@ -186,6 +188,7 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapHub<DMChatHub>("/hubs/dmchat");
 app.MapHub<PresenceHub>("/hubs/presence");
+app.MapHub<ChannelHub>("/hubs/channel");
 
 using (var scope = app.Services.CreateScope())
 {

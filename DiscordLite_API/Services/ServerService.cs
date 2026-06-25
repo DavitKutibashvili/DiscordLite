@@ -2,6 +2,7 @@
 using DiscordLite_API.Model;
 using DiscordLite_API.Services.IServices;
 using DiscordLite_DTO;
+using DiscordLite_Utility;
 using Microsoft.EntityFrameworkCore;
 
 namespace DiscordLite_API.Services
@@ -41,7 +42,7 @@ namespace DiscordLite_API.Services
                 Name = "General",
                 Server = server,
                 Position = 0,
-                Type = ServerChannel.ChannelType.Text
+                Type = SD.ChannelType.Text
             };
             await _db.ServerMembers.AddAsync(serverMember);
             await _db.ServerChannels.AddAsync(serverChannel);

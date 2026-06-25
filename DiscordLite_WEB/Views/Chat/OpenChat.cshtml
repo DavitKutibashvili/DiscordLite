@@ -1,5 +1,4 @@
 ﻿@using System.Security.Claims
-@inject DiscordLite_WEB.Services.IServices.ITokenProvider tokenProvider
 @model DiscordLite_WEB.ViewModels.OpenDMChatVM
 @{
     ViewData["Title"] = Model.OtherDisplayName;
@@ -14,7 +13,7 @@
     <div class="chat-header">
         <div class="avatar">
             @Model.OtherDisplayName.Substring(0, 1).ToUpper()
-            <div class="status-dot" id="otherStatusDot"></div>
+            <div class="status-dot" data-user-id="@Model.OtherUserId" id="otherStatusDot"></div>
         </div>
         <div class="user-info">
             <div class="display-name">@Model.OtherDisplayName</div>
@@ -65,7 +64,6 @@
         const CURRENT_USER = "@User.FindFirstValue(ClaimTypes.NameIdentifier)";
         const OTHER_USER   = "@Model.OtherUserId";
         const OTHER_NAME   = "@Model.OtherDisplayName";
-        const ACCESS_TOKEN = "@tokenProvider.GetAccessToken()";
     </script>
     <script src="~/js/DMChat.js"></script>
 }

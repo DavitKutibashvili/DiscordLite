@@ -84,5 +84,13 @@ namespace DiscordLite_WEB.Services
                 Url = baseUrl + $"{serverId}/{memberId}"
             })!;
         }
+        public Task<T> GetChannelMessagesAsync<T>(int channelId, int page, int pageSize)
+        {
+            return SendAsync<T>(new ApiRequest
+            {
+                ApiType = SD.ApiType.GET,
+                Url = $"api/channel/messages?channelId={channelId}&page={page}&pageSize={pageSize}"
+            })!;
+        }
     }
 }

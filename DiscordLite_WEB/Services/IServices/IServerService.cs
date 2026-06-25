@@ -10,5 +10,6 @@
         Task<T> JoinServerAsync<T>(string inviteCode);
         Task<T> LeaveServerAsync<T>(int serverId);
         Task<T> RemoveMemberAsync<T>(int serverId, string memberId);
+        Task<T> GetChannelMessagesAsync<T>(int channelId, int page, int pageSize);
     }
 }

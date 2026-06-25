@@ -4,6 +4,7 @@ using DiscordLite_WEB.Services.IServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace DiscordLite_WEB.Controllers
 {
@@ -109,9 +110,43 @@ namespace DiscordLite_WEB.Controllers
             return RedirectToAction("Index", "Home");
         }
         [HttpGet]
-        public IActionResult GetCurrentToken()
+        public async Task<IActionResult> GetCurrentToken()
         {
-            return Ok(_tokenProvider.GetAccessToken());
+            var token = _tokenProvider.GetAccessToken();
+            if (string.IsNullOrEmpty(token))
+                return Unauthorized();
+
+            try
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var jwt = handler.ReadJwtToken(token);
+
+                // Refresh if token expires within 2 minutes
+                if (jwt.ValidTo < DateTime.UtcNow.AddMinutes(2))
+                {
+                    var refreshToken = _tokenProvider.GetRefreshToken();
+                    if (string.IsNullOrEmpty(refreshToken))
+                        return Unauthorized();
+
+                    var response = await _authService.RefreshTokenAsync<ApiResponse<TokenDTO>>(
+                        new RefreshTokenRequestDTO { RefreshToken = refreshToken }
+                    );
+
+                    if (response?.Success == true && response.Data != null)
+                    {
+                        _tokenProvider.SetToken(response.Data.AccessToken, response.Data.RefreshToken);
+                        return Ok(response.Data.AccessToken);
+                    }
+
+                    return Unauthorized();
+                }
+            }
+            catch
+            {
+                return Unauthorized();
+            }
+
+            return Ok(token);
         }
     }
 }

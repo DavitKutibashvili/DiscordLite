@@ -54,7 +54,7 @@ namespace DiscordLite_API.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("ChannelMessages");
+                    b.ToTable("ChannelMessages", (string)null);
                 });
 
             modelBuilder.Entity("DiscordLite_API.Model.DirectMessageChat", b =>
@@ -86,7 +86,7 @@ namespace DiscordLite_API.Migrations
                     b.HasIndex("User1Id", "User2Id")
                         .IsUnique();
 
-                    b.ToTable("DirectMessageChats");
+                    b.ToTable("DirectMessageChats", (string)null);
                 });
 
             modelBuilder.Entity("DiscordLite_API.Model.Friendship", b =>
@@ -122,7 +122,7 @@ namespace DiscordLite_API.Migrations
                     b.HasIndex("RequestedById", "ReceivedById")
                         .IsUnique();
 
-                    b.ToTable("Friendships");
+                    b.ToTable("Friendships", (string)null);
                 });
 
             modelBuilder.Entity("DiscordLite_API.Model.Message", b =>
@@ -157,7 +157,7 @@ namespace DiscordLite_API.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("DiscordLite_API.Model.RefreshToken", b =>
@@ -188,7 +188,7 @@ namespace DiscordLite_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("RefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("DiscordLite_API.Model.Server", b =>
@@ -228,7 +228,7 @@ namespace DiscordLite_API.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Servers");
+                    b.ToTable("Servers", (string)null);
                 });
 
             modelBuilder.Entity("DiscordLite_API.Model.ServerChannel", b =>
@@ -258,7 +258,7 @@ namespace DiscordLite_API.Migrations
 
                     b.HasIndex("ServerId");
 
-                    b.ToTable("ServerChannels");
+                    b.ToTable("ServerChannels", (string)null);
                 });
 
             modelBuilder.Entity("DiscordLite_API.Model.ServerMember", b =>
@@ -285,7 +285,7 @@ namespace DiscordLite_API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ServerMembers");
+                    b.ToTable("ServerMembers", (string)null);
                 });
 
             modelBuilder.Entity("DiscordLite_API.Model.User", b =>

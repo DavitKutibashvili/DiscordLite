@@ -1,14 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DiscordLite_Utility;
+using System.ComponentModel.DataAnnotations;
 
 namespace DiscordLite_API.Model
 {
     public class ServerChannel
     {
-        public enum ChannelType
-        {
-            Text,
-            Voice
-        }
         public int Id { get; set; }
 
         public int ServerId { get; set; }
@@ -20,7 +16,7 @@ namespace DiscordLite_API.Model
 
         public int Position { get; set; } = 0;
 
-        public ChannelType Type { get; set; } = ChannelType.Text;
+        public SD.ChannelType Type { get; set; } = SD.ChannelType.Text;
 
         public List<ChannelMessage> Messages { get; set; } = new();
     }

@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DiscordLite_DTO\DiscordLite_DTO.csproj" />
+    <ProjectReference Include="..\DiscordLite_Utility\DiscordLite_Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>

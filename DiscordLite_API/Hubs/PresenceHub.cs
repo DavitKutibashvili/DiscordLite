@@ -1,10 +1,12 @@
 ﻿using DiscordLite_API.Services.IServices;
 using DiscordLite_DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 
 namespace DiscordLite_API.Hubs
 {
+    [Authorize]
     public class PresenceHub : Hub
     {
         private readonly IPresenceService _presenceService;

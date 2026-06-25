@@ -80,5 +80,11 @@ namespace DiscordLite_WEB.Controllers
             ViewBag.SelectedChannelName = selectedChannel?.Name;
             return View(result.Data);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetChannelMessages(int channelId, int page, int pageSize)
+        {
+            var response = await _serverService.GetChannelMessagesAsync<ApiResponse<List<ChannelMessageDTO>>>(channelId, page, pageSize);
+            return Ok(response);
+        }
     }
 }

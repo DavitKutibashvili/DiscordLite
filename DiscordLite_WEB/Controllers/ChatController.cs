@@ -107,5 +107,11 @@ namespace DiscordLite_WEB.Controllers
                 return RedirectToAction("Index", "Friend");
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> GetMessages(int chatId, int page, int pageSize)
+        {
+            var response = await _dmChatService.GetChatMessagesAsync<ApiResponse<List<MessageDTO>>>(chatId, page, pageSize);
+            return Ok(response);
+        }
     }
 }

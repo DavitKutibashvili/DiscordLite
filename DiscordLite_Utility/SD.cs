@@ -14,6 +14,11 @@ namespace DiscordLite_Utility
             PATCH,
             DELETE
         }
+        public enum ChannelType
+        {
+            Text,
+            Voice
+        }
         public const string SessionAccessToken = "JWTToken";
         public const string SessionRefreshToken = "RefreshToken";
         public const string CurrentAPIVersion = "v1";

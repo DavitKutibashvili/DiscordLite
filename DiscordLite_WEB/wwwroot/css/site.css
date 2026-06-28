@@ -19,7 +19,6 @@ html {
 
 body {
     margin-bottom: 0;
-    overflow: hidden;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -34,4 +33,25 @@ body {
 
 [data-user-id].online {
     background-color: #23a559 !important;
+}
+
+.dl-server-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dl-server-action-form {
+    flex: 1;
+    display: flex;
+    gap: 0.5rem;
+}
+
+@media (max-width: 576px) {
+    .dl-server-actions {
+        flex-direction: column;
+    }
+
+    .dl-server-action-form .dl-btn-primary {
+        white-space: nowrap;
+    }
 }

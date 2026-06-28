@@ -26,15 +26,15 @@
         <p class="dl-section-label">Your Servers</p>
 
         <!-- Create / Join actions -->
-        <div class="d-flex gap-2 mb-4">
-            <form asp-action="CreateServer" method="post" class="flex-grow-1 d-flex gap-2">
+        <div class="dl-server-actions mb-4">
+            <form asp-action="CreateServer" method="post" class="dl-server-action-form">
                 <input type="text" name="name" class="dl-input" placeholder="Server name" required />
                 <button type="submit" class="dl-btn-primary">
                     <i class="bi bi-plus-lg me-1"></i>Create
                 </button>
             </form>
 
-            <form asp-action="JoinServer" method="post" class="flex-grow-1 d-flex gap-2">
+            <form asp-action="JoinServer" method="post" class="dl-server-action-form">
                 <input type="text" name="inviteCode" class="dl-input" placeholder="Invite code" required />
                 <button type="submit" class="dl-btn-primary" style="background: var(--dl-surface); border: 1px solid var(--dl-border); color: var(--dl-text);">
                     <i class="bi bi-link-45deg me-1"></i>Join

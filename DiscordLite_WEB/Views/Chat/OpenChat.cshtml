@@ -1,4 +1,5 @@
 ﻿@using System.Security.Claims
+@using DiscordLite_Utility
 @model DiscordLite_WEB.ViewModels.OpenDMChatVM
 @{
     ViewData["Title"] = Model.OtherDisplayName;
@@ -12,7 +13,7 @@
     <!-- Header -->
     <div class="chat-header">
         <div class="avatar">
-            @Model.OtherDisplayName.Substring(0, 1).ToUpper()
+            <img src="@SD.GetImageUrl(Model.OtherAvatarUrl)" alt="Avatar" class="dl-avatar" />
             <div class="status-dot" data-user-id="@Model.OtherUserId" id="otherStatusDot"></div>
         </div>
         <div class="user-info">

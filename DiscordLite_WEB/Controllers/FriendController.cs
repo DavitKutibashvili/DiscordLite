@@ -55,7 +55,7 @@ namespace DiscordLite_WEB.Controllers
             {
                 TempData["error"] = "Failed to send friend request " + ex.ToString();
             }
-            return RedirectToAction(nameof(Index));
+            return Redirect(Request.Headers.Referer.ToString());
         }
         [HttpPost]
         public async Task<IActionResult> AcceptFriendRequest(int id)

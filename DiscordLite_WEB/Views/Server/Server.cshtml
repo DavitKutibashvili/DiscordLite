@@ -44,7 +44,7 @@
                             <i class="bi bi-hash"></i>
                             <span class="channel-name">@channel.Name</span>
                         </a>
-                        <a asp-action="DeleteChannel" asp-route-id="@channel.Id" class="ch-delete" title="Delete"><i class="bi bi-trash"></i></a>
+                        <a asp-action="DeleteChannel" asp-route-id="@channel.Id" asp-route-serverId="@Model.Id" class="ch-delete" title="Delete"><i class="bi bi-trash"></i></a>
                     </div>
                 }
             </div>
@@ -107,7 +107,7 @@
     </div>
 
     <!-- Right: Members Sidebar -->
-    <div class="members-sidebar" id="membersSidebar" style="display:none;">
+    <div class="members-sidebar" id="membersSidebar" style="display:flex;">
         <div class="members-sidebar-header">Members — @Model.Members.Count</div>
         <div class="members-list">
             @foreach (var member in Model.Members.OrderByDescending(m => m.IsOwner))
@@ -127,6 +127,26 @@
                         </div>
                         <div class="member-sub">@member.UserName</div>
                     </div>
+                    <div class="dl-actions">
+                        @if (!member.IsAlreadyFriend && member.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+                        {
+                            <form asp-controller="Friend" asp-action="SendFriendRequest" method="post">
+                                <input type="hidden" name="username" value="@member.UserName" />
+                                <button class="dl-icon-btn dl-icon-btn-outline" title="Add friend" style="width:32px;height:32px;">
+                                    <i class="bi bi-person-plus"></i>
+                                </button>
+
+                            </form>
+                        }
+                        @if (Model.OwnerId == User.FindFirstValue(ClaimTypes.NameIdentifier) && !member.IsOwner)
+                        {
+                            <form asp-action="RemoveMember" asp-route-serverId="@Model.Id" asp-route-userId="@member.UserId" method="post">
+                                <button type="submit" class="dl-icon-btn dl-icon-btn-danger" title="Kick" style="width:32px;height:32px;">
+                                    <i class="bi bi-person-x"></i>
+                                </button>
+                            </form>
+                        }
+                    </div>
                 </div>
             }
         </div>
@@ -134,7 +154,7 @@
         <div class="invite-bar">
             <i class="bi bi-link-45deg" style="color: var(--dl-muted); flex-shrink:0;"></i>
             <span class="invite-code-text" id="inviteCodeText">@Model.InviteCode</span>
-            <form asp-action="GenerateInviteCode" asp-route-id="@Model.Id" method="post">
+            <form asp-action="GenerateInviteCode" asp-route-serverId="@Model.Id" method="post">
                 <button type="submit" title="Regenerate"><i class="bi bi-arrow-clockwise"></i></button>
             </form>
             <button onclick="copyInvite()" title="Copy"><i class="bi bi-clipboard" id="copyIcon"></i></button>
@@ -231,9 +251,16 @@
                     <div class="member-sub">@member.UserName</div>
                 </div>
                 <div class="mobile-member-actions">
-                    <button class="dl-icon-btn dl-icon-btn-outline" title="Add friend" style="width:32px;height:32px;">
-                        <i class="bi bi-person-plus"></i>
-                    </button>
+                    @if (!member.IsAlreadyFriend && member.UserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+                    {
+                        <form asp-controller="Friend" asp-action="SendFriendRequest" method="post">
+                            <input type="hidden" name="username" value="@member.UserName" />
+                            <button class="dl-icon-btn dl-icon-btn-outline" title="Add friend" style="width:32px;height:32px;">
+                                <i class="bi bi-person-plus"></i>
+                            </button>
+
+                        </form>
+                    }
                     <form asp-action="RemoveMember" asp-route-serverId="@Model.Id" asp-route-userId="@member.UserId" method="post">
                         <button type="submit" class="dl-icon-btn dl-icon-btn-danger" title="Remove" style="width:32px;height:32px;">
                             <i class="bi bi-person-x"></i>
@@ -291,6 +318,22 @@
     </div>
 
 </div>
+@if (TempData["success"] != null)
+{
+    <div class="dl-alert dl-alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill"></i>
+        @TempData["success"]
+        <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"></button>
+    </div>
+}
+@if (TempData["error"] != null)
+{
+    <div class="dl-alert dl-alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-circle-fill"></i>
+        @TempData["error"]
+        <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"></button>
+    </div>
+}
 
 @section Scripts {
     <script>

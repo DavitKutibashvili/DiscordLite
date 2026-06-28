@@ -92,5 +92,22 @@ namespace DiscordLite_WEB.Services
                 Url = $"api/channel/messages?channelId={channelId}&page={page}&pageSize={pageSize}"
             })!;
         }
+        public Task<T> CreateChannelAsync<T>(ChannelCreateDTO dto)
+        {
+            return SendAsync<T>(new ApiRequest
+            {
+                ApiType = SD.ApiType.POST,
+                Url = $"api/channel",
+                Data = dto
+            })!;
+        }
+        public Task<T> DeleteChannelAsync<T>(int id)
+        {
+            return SendAsync<T>(new ApiRequest
+            {
+                ApiType = SD.ApiType.DELETE,
+                Url = $"api/Channel?channelId={id}",
+            })!;
+        }
     }
 }

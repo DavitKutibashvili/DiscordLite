@@ -1,4 +1,5 @@
 ﻿using DiscordLite_DTO;
+using DiscordLite_Utility;
 using DiscordLite_WEB.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -85,6 +86,58 @@ namespace DiscordLite_WEB.Controllers
         {
             var response = await _serverService.GetChannelMessagesAsync<ApiResponse<List<ChannelMessageDTO>>>(channelId, page, pageSize);
             return Ok(response);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateChannel(int serverId, string name)
+        {
+            var dto = new ChannelCreateDTO
+            {
+                ServerId = serverId,
+                Name = name,
+                Type = SD.ChannelType.Text
+            };
+            await _serverService.CreateChannelAsync<ApiResponse<object>>(dto);
+            return RedirectToAction("Server", new { id = serverId });
+        }
+        [HttpGet]
+        public async Task<IActionResult> DeleteChannel(int id, int serverId)
+        {
+            await _serverService.DeleteChannelAsync<ApiResponse<object>>(id);
+            return RedirectToAction("Server", new { id = serverId });
+        }
+        [HttpPost]
+        public async Task<IActionResult> LeaveServer(int id)
+        {
+            var response = await _serverService.LeaveServerAsync<ApiResponse<object>>(id);
+            if(!response.Success)
+            {
+                TempData["error"] = response.Message;
+                return Redirect(Request.Headers.Referer.ToString());
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteServer(int id)
+        {
+            var response = await _serverService.DeleteServerAsync<ApiResponse<object>>(id);
+            if (!response.Success)
+            {
+                TempData["error"] = response.Message;
+                return Redirect(Request.Headers.Referer.ToString());
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        public async Task<IActionResult> GenerateInviteCode(int serverId)
+        {
+            await _serverService.GenerateInviteCodeAsync<ApiResponse<string>>(serverId);
+            return Redirect(Request.Headers.Referer.ToString());
+        }
+        [HttpPost]
+        public async Task<IActionResult> RemoveMember(int serverId, string userId)
+        {
+            await _serverService.RemoveMemberAsync<ApiResponse<object>>(serverId, userId);
+            return Redirect(Request.Headers.Referer.ToString());
         }
     }
 }

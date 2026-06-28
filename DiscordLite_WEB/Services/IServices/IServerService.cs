@@ -1,4 +1,6 @@
-﻿namespace DiscordLite_WEB.Services.IServices
+﻿using DiscordLite_DTO;
+
+namespace DiscordLite_WEB.Services.IServices
 {
     public interface IServerService
     {
@@ -11,5 +13,7 @@
         Task<T> LeaveServerAsync<T>(int serverId);
         Task<T> RemoveMemberAsync<T>(int serverId, string memberId);
         Task<T> GetChannelMessagesAsync<T>(int channelId, int page, int pageSize);
+        Task<T> CreateChannelAsync<T>(ChannelCreateDTO dto);
+        Task<T> DeleteChannelAsync<T>(int id);
     }
 }

@@ -48,7 +48,13 @@ namespace DiscordLite_API.Services
             await _db.ServerChannels.AddAsync(serverChannel);
             await _db.Servers.AddAsync(server);
             await _db.SaveChangesAsync();
-            return ApiResponse<ServerDTO>.CreatedAt(MapToDTO(server), "Server created successfully.");
+            var created = await _db.Servers
+                .Include(s => s.Channels)
+                .Include(s => s.Members)
+                    .ThenInclude(m => m.User)
+                .FirstAsync(s => s.Id == server.Id);
+
+            return ApiResponse<ServerDTO>.CreatedAt(MapToDTO(created), "Server created successfully.");
         }
 
         public async Task<ApiResponse<object>> DeleteServerAsync(int serverId, string userId)
@@ -115,7 +121,13 @@ namespace DiscordLite_API.Services
             {
                 return ApiResponse<ServerDTO>.NotFound("Server not found.");
             }
-            return ApiResponse<ServerDTO>.Ok(MapToDTO(server), "Server retrieved successfully.");
+            var friendIds = await _db.Friendships
+                .Where(f => f.Status == FriendshipStatus.Accepted &&
+                           (f.RequestedById == userId || f.ReceivedById == userId))
+                .Select(f => f.RequestedById == userId ? f.ReceivedById : f.RequestedById)
+                .ToHashSetAsync();
+
+            return ApiResponse<ServerDTO>.Ok(MapToDTO(server, friendIds), "Server retrieved successfully.");
         }
 
         public async Task<ApiResponse<List<ServerDTO>>> GetUserServersAsync(string userId)
@@ -126,7 +138,7 @@ namespace DiscordLite_API.Services
             }
             var serversList = await _db.Servers.Where(s => s.Members.Any(m => m.UserId == userId)).ToListAsync();
 
-            var serverDTOs = serversList.Select(MapToDTO).ToList();
+            var serverDTOs = serversList.Select(s => MapToDTO(s)).ToList();
             return ApiResponse<List<ServerDTO>>.Ok(serverDTOs, "User servers retrieved successfully.");
         }
 
@@ -221,7 +233,7 @@ namespace DiscordLite_API.Services
                 .Select(_ => chars[Random.Shared.Next(chars.Length)])
                 .ToArray());
         }
-        private ServerDTO MapToDTO(Server s) => new ServerDTO
+        private ServerDTO MapToDTO(Server s, HashSet<string>? friendIds = null) => new ServerDTO
         {
             Id = s.Id,
             Name = s.Name,
@@ -241,7 +253,8 @@ namespace DiscordLite_API.Services
                 UserName = m.User.UserName!,
                 DisplayName = m.User.DisplayName,
                 AvatarUrl = m.User.AvatarUrl,
-                IsOwner = m.UserId == s.OwnerId
+                IsOwner = m.UserId == s.OwnerId,
+                IsAlreadyFriend = friendIds?.Contains(m.UserId) ?? false
             }).ToList() ?? new()
         };
     }

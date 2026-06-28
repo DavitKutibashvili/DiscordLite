@@ -6,5 +6,6 @@
         public string OtherUserId { get; set; } = null!;
         public string OtherUserName { get; set; } = null!;
         public string OtherDisplayName { get; set; } = null!;
+        public string OtherAvatarUrl { get; set; } = null!;
     }
 }

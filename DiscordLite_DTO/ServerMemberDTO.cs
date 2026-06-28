@@ -11,5 +11,6 @@ namespace DiscordLite_DTO
         public string DisplayName { get; set; }
         public string? AvatarUrl { get; set; }
         public bool IsOwner { get; set; }
+        public bool IsAlreadyFriend { get; set; }
     }
 }

@@ -66,7 +66,8 @@ namespace DiscordLite_WEB.Controllers
                     ChatId = chat.Data.ChatId,
                     OtherUserId = chat.Data.User1Id == currentUserId ? chat.Data.User2Id : chat.Data.User1Id,
                     OtherUserName = chat.Data.User1Id == currentUserId ? chat.Data.User2UserName : chat.Data.User1UserName,
-                    OtherDisplayName = chat.Data.User1Id == currentUserId ? chat.Data.User2DisplayName : chat.Data.User1DisplayName
+                    OtherDisplayName = chat.Data.User1Id == currentUserId ? chat.Data.User2DisplayName : chat.Data.User1DisplayName,
+                    OtherAvatarUrl = chat.Data.User1Id == currentUserId ? chat.Data.User2AvatarUrl : chat.Data.User1AvatarUrl
                 };
 
                 return View(vm);
